@@ -33,14 +33,14 @@ void gssxx::GssClientContext::InitiateContext(tcp::socket &socket, std::string p
                                        &returnFlags_,
                                        nullptr);
 
+    if (majorStatus != GSS_S_COMPLETE && majorStatus != GSS_S_CONTINUE_NEEDED) {
+      throw GssException("Error establishing context", majorStatus, minorStatus);
+    }
+
     if (sendBuffer.size() > 0) {
       std::cerr << "Sending token:" << std::endl;
       std::cerr << sendBuffer << std::endl;
       sendBuffer.send(socket);
-    }
-
-    if (majorStatus != GSS_S_COMPLETE && majorStatus != GSS_S_CONTINUE_NEEDED) {
-      throw GssException("Error establishing context", majorStatus, minorStatus);
     }
 
     if (majorStatus == GSS_S_CONTINUE_NEEDED) {
