@@ -13,6 +13,7 @@
 #include "gssservercred.hpp"
 #include "gssxxerror.hpp"
 #include "gsscontext.hpp"
+#include "gssauthdata.hpp"
 
 namespace gssxx {
 
@@ -34,6 +35,8 @@ namespace gssxx {
 
     void acceptContextAsync(boost::asio::ip::tcp::socket& socket, Callback callback);
 
+    GssAuthData getAuthData();
+
   private:
     void receivedToken(std::shared_ptr<GssBuffer> buffer,
                        GssxxError error);
@@ -46,7 +49,6 @@ namespace gssxx {
     boost::asio::ip::tcp::socket* socketPtr_;
     GssServerCredential credential_;
     Callback callback_;
-    boost::endian::big_uint32_t tokenLength_;
   };
 
 } // gssxx

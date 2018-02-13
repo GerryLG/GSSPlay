@@ -2,6 +2,8 @@
 #include <stdexcept>
 #include <functional>
 
+#include "gssapi/gssapi_krb5.h"
+
 #include "gssservercontext.hpp"
 #include "gssexception.hpp"
 #include "gssvectorbuffer.hpp"
@@ -132,4 +134,18 @@ GssServerContext::postCallback(const GssxxError& status)
   callback_ = nullptr;
   
   ioService.post(std::bind(callback, status));
+}
+
+GssAuthData
+GssServerContext::getAuthData()
+{
+  GssExternalBuffer buffer;
+  OM_uint32 majorStatus, minorStatus;
+
+  majorStatus = gsskrb5_extract_authz_data_from_sec_context(&minorStatus, context_, 1, buffer);
+  if (majorStatus != GSS_S_COMPLETE) {
+    throw GssException("Error extracting authdata", majorStatus, minorStatus);
+  }
+
+  return std::move(buffer);
 }
