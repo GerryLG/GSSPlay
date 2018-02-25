@@ -18,7 +18,7 @@ getMessage(OM_uint32 code, int type)
     majorStatus = gss_display_status(&minorStatus, code, type, GSS_C_NULL_OID,
                                      &messageContext, &message);
     if (majorStatus == GSS_S_COMPLETE) {
-      messages.push_back(std::string{(char *)message.value});
+      messages.push_back(reinterpret_cast<char *>(message.value));
     } else {
       messages.push_back("*** Error calling gss_display_status ***");
       auto messages2 = getMessage(majorStatus, GSS_C_GSS_CODE);

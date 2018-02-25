@@ -11,7 +11,6 @@
 namespace gssxx {
 
   class GssClientContext : public GssContext {
-
   public:
 
     GssClientContext()
@@ -19,7 +18,7 @@ namespace gssxx {
       std::cerr << "GssClientContext()" << std::endl;
     }
 
-    void InitiateContext(boost::asio::ip::tcp::socket& socket, std::string peerName);
+    void InitiateContext(boost::asio::ip::tcp::socket& socket, const std::string& peerName);
   };
 
 }  // gssxx

@@ -12,7 +12,7 @@
 using namespace gssxx;
 using namespace boost;
 
-using tcp = boost::asio::ip::tcp;
+using tcp = asio::ip::tcp;
 
 void
 GssServerContext::acceptContextAsync(tcp::socket& socket, Callback callback)
@@ -22,11 +22,11 @@ GssServerContext::acceptContextAsync(tcp::socket& socket, Callback callback)
   callback_ = callback;
 
   if (! socketPtr_->is_open()) {
-    throw std::logic_error("acceptContext called on a closed socket");
+    throw std::logic_error("acceptContextAsync called on a closed socket");
   }
 
   auto buffer = std::make_shared<GssVectorBuffer>();
-  
+
   buffer->receiveAsync(socket,
                        std::bind(&GssServerContext::receivedToken,
                                  this,
@@ -37,8 +37,8 @@ GssServerContext::acceptContextAsync(tcp::socket& socket, Callback callback)
 void
 GssServerContext::receivedToken(std::shared_ptr<GssBuffer> buffer, GssxxError error)
 {
-  std::cerr << "GssServerContext::receivedToken"<< std::endl;
-  
+  std::cerr << "GssServerContext::receivedToken" << std::endl;
+
   if (error) {
     state_ = State::Error;
     error.setMessage("Error receiving token\n" + error.message());
@@ -96,7 +96,7 @@ GssServerContext::sentToken(std::shared_ptr<GssBuffer> buffer, GssxxError error)
   // We need buffer to be passed into this function so that it retains the reference
   // until the send is complete.
   std::cerr << "GssServerContext::sentToken" << std::endl;
-  
+
   if (error) {
     state_ = State::Error;
     error.setMessage("Error sending token.\n" + error.message());
@@ -129,10 +129,10 @@ GssServerContext::postCallback(const GssxxError& status)
 
   auto& ioService = socketPtr_->get_io_service();
   auto callback = callback_;
-  
+
   socketPtr_ = nullptr;
   callback_ = nullptr;
-  
+
   ioService.post(std::bind(callback, status));
 }
 

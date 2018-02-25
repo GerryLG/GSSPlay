@@ -15,7 +15,6 @@
 namespace gssxx {
 
   class GssContext {
-    
   public:
 
     enum class State {
@@ -52,14 +51,14 @@ namespace gssxx {
 
   protected:
     GssContext()
-      : state_{State::NotEstablished}
-      , context_{GSS_C_NO_CONTEXT}
-      , peerName_{"NoPeer"}
-      , returnFlags_{0}
+      : state_ {State::NotEstablished}
+      , context_ {GSS_C_NO_CONTEXT}
+      , peerName_ {"NoPeer"}
+      , returnFlags_ {0}
     {
       std::cerr << "GssContext()" << std::endl;
     }
-    
+
     State state_;
     gss_ctx_id_t context_;
     GssName peerName_;
@@ -67,6 +66,5 @@ namespace gssxx {
   };
 
 }  // gssxx
-
 
 #endif /* GSSCONTEXT_H */

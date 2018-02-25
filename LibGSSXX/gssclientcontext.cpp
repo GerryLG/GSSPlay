@@ -8,7 +8,8 @@ using namespace boost;
 
 using tcp = asio::ip::tcp;
 
-void gssxx::GssClientContext::InitiateContext(tcp::socket &socket, std::string peerName)
+void
+gssxx::GssClientContext::InitiateContext(tcp::socket& socket, const std::string& peerName)
 {
   std::cerr << "GssClientContext::InitiateContext()" << std::endl;
 
@@ -34,7 +35,7 @@ void gssxx::GssClientContext::InitiateContext(tcp::socket &socket, std::string p
                                        nullptr);
 
     if (majorStatus != GSS_S_COMPLETE && majorStatus != GSS_S_CONTINUE_NEEDED) {
-      throw GssException("Error establishing context", majorStatus, minorStatus);
+      throw GssException {"Error establishing context", majorStatus, minorStatus};
     }
 
     if (sendBuffer.size() > 0) {
@@ -45,7 +46,7 @@ void gssxx::GssClientContext::InitiateContext(tcp::socket &socket, std::string p
 
     if (majorStatus == GSS_S_CONTINUE_NEEDED) {
       receivedBuffer.receive(socket);
-      std::cerr << "Recieved Token:" << std::endl;
+      std::cerr << "Received Token:" << std::endl;
       std::cerr << receivedBuffer << std::endl;
     }
   } while (majorStatus == GSS_S_CONTINUE_NEEDED);

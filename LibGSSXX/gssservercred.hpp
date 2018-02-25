@@ -8,17 +8,21 @@
 
 namespace gssxx {
 
-  class GssServerCredential
-  {
+  class GssServerCredential;
+
+  inline void swap(GssServerCredential& lhs, GssServerCredential& rhs) noexcept;
+
+  class GssServerCredential {
     friend void swap(GssServerCredential& lhs, GssServerCredential& rhs) noexcept;
-    
+
   public:
-    GssServerCredential(std::string serviceName);
-    GssServerCredential(std::string serviceName, std::string keytabFile);
+    GssServerCredential(const std::string& serviceName);
+    GssServerCredential(const std::string& serviceName, const std::string& keytabFile);
 
     //! Copy constructor
-    GssServerCredential(const GssServerCredential &other) noexcept
-      : credential_{other.credential_}, referenceCount_{other.referenceCount_}
+    GssServerCredential(const GssServerCredential& other) noexcept
+      : credential_ {other.credential_}
+      , referenceCount_ {other.referenceCount_}
     {
       ++*referenceCount_;
     }
@@ -37,11 +41,11 @@ namespace gssxx {
     {
       return credential_;
     }
-    
+
   private:
-    void setCredential(std::string serviceName);
+    void setCredential(const std::string& serviceName);
     gss_cred_id_t credential_;
-    int *referenceCount_;
+    int* referenceCount_;
   };
 
   inline void swap(GssServerCredential& lhs, GssServerCredential& rhs) noexcept

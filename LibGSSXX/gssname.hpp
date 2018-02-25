@@ -4,23 +4,24 @@
 #include <string>
 #include <gssapi/gssapi.h>
 
-namespace gssxx
-{
-  class GssName
-  {
+namespace gssxx {
+  class GssName;
+  inline void swap(GssName& first, GssName& second);
+
+  class GssName {
     friend void swap(GssName& first, GssName& second);
   public:
     GssName(const std::string& name);
     GssName(const gss_name_t& name);
 
     //! Copy constructor
-    GssName(const GssName &other);
+    GssName(const GssName& other);
 
     //! Move constructor
-    GssName(GssName &&other) noexcept
+    GssName(GssName&& other) noexcept
     {
       name_ = other.name_;
-      other.name_ = nullptr;
+      other.name_ = GSS_C_NO_NAME;
     }
 
     //! Destructor

@@ -17,16 +17,14 @@
 
 namespace gssxx {
 
-
   class GssServerContext : public GssContext {
-
   public:
     using Callback = std::function<void(const GssxxError&)>;
 
     GssServerContext(const GssServerCredential& serverCred)
-      : socketPtr_{nullptr}
-      , credential_{serverCred}
-      , callback_{nullptr}
+      : socketPtr_ {nullptr}
+      , credential_ {serverCred}
+      , callback_ {nullptr}
     {
       std::cerr << "GssServerContext()" << std::endl;
     }
@@ -40,10 +38,8 @@ namespace gssxx {
   private:
     void receivedToken(std::shared_ptr<GssBuffer> buffer,
                        GssxxError error);
-
     void sentToken(std::shared_ptr<GssBuffer> buffer,
                    GssxxError error);
-
     void postCallback(const GssxxError& status);
 
     boost::asio::ip::tcp::socket* socketPtr_;
@@ -52,6 +48,5 @@ namespace gssxx {
   };
 
 } // gssxx
-
 
 #endif /* GSSSERVERCONTEXT_H */

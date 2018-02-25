@@ -5,7 +5,7 @@
 using namespace gssxx;
 
 GssExternalBuffer
-GssContext::wrap(GssBuffer &buffer, GssStatus &status)
+GssContext::wrap(GssBuffer& buffer, GssStatus& status)
 {
   std::cerr << "GssContext::wrap(buffer, status)" << std::endl;
   GssExternalBuffer returnBuffer;
@@ -18,7 +18,7 @@ GssContext::wrap(GssBuffer &buffer, GssStatus &status)
 }
 
 GssExternalBuffer
-GssContext::wrap(GssBuffer &buffer)
+GssContext::wrap(GssBuffer& buffer)
 {
   std::cerr << "GssContext::wrap(buffer)" << std::endl;
   GssStatus status;
@@ -32,7 +32,7 @@ GssContext::wrap(GssBuffer &buffer)
 }
 
 GssExternalBuffer
-GssContext::unwrap(GssBuffer &buffer, GssStatus &status)
+GssContext::unwrap(GssBuffer& buffer, GssStatus& status)
 {
   std::cerr << "GssContext::unwrap(buffer, status)" << std::endl;
   GssExternalBuffer returnBuffer;
@@ -45,7 +45,7 @@ GssContext::unwrap(GssBuffer &buffer, GssStatus &status)
 }
 
 GssExternalBuffer
-GssContext::unwrap(GssBuffer &buffer)
+GssContext::unwrap(GssBuffer& buffer)
 {
   std::cerr << "GssContext::unwrap(buffer)" << std::endl;
   GssStatus status;

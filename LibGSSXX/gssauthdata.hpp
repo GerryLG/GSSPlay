@@ -16,7 +16,7 @@ namespace gssxx {
     {
       return buffer_;
     }
-    
+
   private:
     GssExternalBuffer buffer_;
   };

@@ -11,16 +11,16 @@ namespace gssxx {
   public:
     //! Default constructor
     GssExternalBuffer()
-      : gssBuffer_{0, nullptr}
+      : gssBuffer_ {0, nullptr}
     {
       std::cerr << "GssExternalBuffer()" << std::endl;
     }
 
     //! Copy constructor
-    GssExternalBuffer(const GssExternalBuffer &other) = delete;
+    GssExternalBuffer(const GssExternalBuffer& other) = delete;
 
     //! Move constructor
-    GssExternalBuffer(GssExternalBuffer &&other) noexcept
+    GssExternalBuffer(GssExternalBuffer&& other) noexcept
     {
       std::cerr << "GssExternalBuffer() (Move Constructor)" << std::endl;
       gssBuffer_ = other.gssBuffer_;
@@ -28,17 +28,17 @@ namespace gssxx {
     }
 
     //! Destructor
-    ~GssExternalBuffer() noexcept
+    virtual ~GssExternalBuffer() noexcept
     {
       std::cerr << "~GssExternalBuffer" << std::endl;
       clear();
     }
 
     //! Copy assignment operator
-    GssExternalBuffer& operator=(const GssExternalBuffer &other) = delete;
+    GssExternalBuffer& operator=(const GssExternalBuffer& other) = delete;
 
     //! Move assignment operator
-    GssExternalBuffer& operator=(GssExternalBuffer &&other) noexcept
+    GssExternalBuffer& operator=(GssExternalBuffer&& other) noexcept
     {
       std::cerr << "GssExternalBuffer (move assignment)" << std::endl;
       clear();
@@ -64,14 +64,12 @@ namespace gssxx {
     }
 
   protected:
-
     virtual const void* data() const override final
     {
       return gssBuffer_.value;
     }
 
   private:
-
     void clear()
     {
       if (gssBuffer_.value != nullptr) {
@@ -83,6 +81,6 @@ namespace gssxx {
     gss_buffer_desc gssBuffer_;
   }; // class GssExternalBuffer
 
-}  // gssxx
+} // gssxx
 
 #endif /* GSSEXTERNALBUFFER_H */

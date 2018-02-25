@@ -9,7 +9,6 @@
 #include "gssexception.hpp"
 #include "gssstatus.hpp"
 
-
 namespace gssxx {
 
   // TODO: Add some way of adding to message.
@@ -22,26 +21,26 @@ namespace gssxx {
     };
 
     GssxxError()
-      : type_{ErrorType::NoError}
-      , message_{"No Error"}
-      , gssStatus_{0, 0}
-      , errorCode_{}
+      : type_ {ErrorType::NoError}
+      , message_ {"No Error"}
+      , gssStatus_ {}
+      , errorCode_ {}
     {
     }
 
     GssxxError(std::string message, OM_uint32 majorStatus, OM_uint32 minorStatus)
-      : type_{ErrorType::GssError}
-      , message_{message}
-      , gssStatus_{majorStatus, minorStatus}
-      , errorCode_{}
+      : type_ {ErrorType::GssError}
+      , message_ {message}
+      , gssStatus_ {majorStatus, minorStatus}
+      , errorCode_ {}
     {
     }
 
-    GssxxError(std::string message, const boost::system::error_code errorCode)
-      : type_{ErrorType::SystemError}
-      , message_{message}
-      , gssStatus_{0, 0}
-      , errorCode_{errorCode}
+    GssxxError(std::string message, const boost::system::error_code& errorCode)
+      : type_ {ErrorType::SystemError}
+      , message_ {message}
+      , gssStatus_ {}
+      , errorCode_ {errorCode}
     {
     }
 
