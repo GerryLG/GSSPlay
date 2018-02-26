@@ -70,7 +70,12 @@ gssxx::operator<<(std::ostream& outStream, const GssBuffer& buffer)
   auto data = static_cast<const unsigned char*>(buffer.data());
   auto size = buffer.size();
 
+  bool newLine = true;
   for (int i = 0, j = 0; i < size; ++i) {
+    if (newLine) {
+      outStream << boost::format("%08X ") % i;
+      newLine = false;
+    }
     outStream << boost::format("%02X ") % static_cast<unsigned int>(data[i]);
     if (j == 15 || i == size - 1) {
       // end of line
@@ -85,6 +90,7 @@ gssxx::operator<<(std::ostream& outStream, const GssBuffer& buffer)
           outStream << ".";
       }
       outStream << std::endl;
+      newLine = true;
       j = 0;
     } else {
       ++j;
