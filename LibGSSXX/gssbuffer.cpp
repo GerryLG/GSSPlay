@@ -2,6 +2,7 @@
 #include <boost/format.hpp>
 
 #include "gssbuffer.hpp"
+#include "gssder.hpp"
 
 using namespace gssxx;
 using namespace boost;
@@ -9,6 +10,18 @@ using namespace boost::endian;
 
 using tcp = asio::ip::tcp;
 
+GssBuffer::GssBuffer()
+  : handler_ {}
+  , sendDataLength_ {0}
+  , parserPtr_ {new der::DerParser {this}}
+{
+}
+
+GssBuffer::~GssBuffer()
+{
+}
+
+ 
 void
 GssBuffer::send(tcp::socket& socket) const
 {

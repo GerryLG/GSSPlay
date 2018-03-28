@@ -10,6 +10,7 @@ add_library (libgssxx
   gssservercontext.cpp
   gssservercred.cpp
   gssvectorbuffer.cpp
+  gssder.cpp
   )
 
 target_include_directories (libgssxx PUBLIC ${GSSAPI_INCLUDE_DIRS})

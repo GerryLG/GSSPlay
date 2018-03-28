@@ -1,7 +1,11 @@
 #ifndef GSSAUTHDATA_H
 #define GSSAUTHDATA_H
 
+#include <string>
+#include <vector>
+
 #include "gssexternalbuffer.hpp"
+#include "gsspartialbuffer.hpp"
 
 namespace gssxx {
 
@@ -17,9 +21,11 @@ namespace gssxx {
       return buffer_;
     }
 
+    void dumpTest() const;
+
   private:
     GssExternalBuffer buffer_;
-  };
+ };
 
 }  // gssxx
 

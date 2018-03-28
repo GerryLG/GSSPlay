@@ -57,6 +57,7 @@ tcp_connection::handle_write(const GssxxError& error)
   try {
     auto authData = context_.getAuthData();
     std::cerr << authData << std::endl;
+    authData.dumpTest();
   } catch (GssException e) {
     std::cerr << e.what() << std::endl;
     std::cerr << e.message() << std::endl;
