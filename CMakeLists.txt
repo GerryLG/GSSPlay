@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.1)
 project (KrbPlay)
 
 set (CMAKE_CXX_EXTENSIONS OFF)
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 find_package (Boost REQUIRED COMPONENTS system thread)
 find_package (PkgConfig REQUIRED)
