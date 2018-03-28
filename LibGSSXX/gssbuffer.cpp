@@ -73,16 +73,16 @@ gssxx::operator<<(std::ostream& outStream, const GssBuffer& buffer)
   bool newLine = true;
   for (int i = 0, j = 0; i < size; ++i) {
     if (newLine) {
-      outStream << boost::format("%08X ") % i;
+      outStream << boost::format("%08x: ") % i;
       newLine = false;
     }
-    outStream << boost::format("%02X ") % static_cast<unsigned int>(data[i]);
+    outStream << boost::format("%02x ") % static_cast<unsigned int>(data[i]);
     if (j == 15 || i == size - 1) {
       // end of line
       for (int k = j; k < 15; ++k) {
         outStream << "   ";
       }
-      outStream << " |  ";
+      outStream << " ";
       for (int k = i - j; k <= i; ++k) {
         if (std::isprint(data[k]))
           outStream << data[k];
