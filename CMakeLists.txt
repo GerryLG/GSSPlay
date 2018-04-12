@@ -14,8 +14,7 @@ include_directories (${GSSAPI_INCLUDE_DIRS})
 add_executable (gsstest gsstest.c)
 target_link_libraries (gsstest PUBLIC ${GSSAPI_LIBRARIES})
 
-add_subdirectory (LibGSSXX)
-include_directories (LibGSSXX)
+add_subdirectory (GSSXX)
 
 add_subdirectory (DaytimeClient)
 add_subdirectory (DaytimeServer)
@@ -24,4 +23,4 @@ include_directories (${Boost_INCLUDE_DIRS})
 link_libraries (Boost::system Boost::thread)
 
 add_executable (testlibgssxx testlibgssxx.cpp)
-target_link_libraries (testlibgssxx libgssxx ${GSSAPI_LIBRARIES})
+target_link_libraries (testlibgssxx gssxx ${GSSAPI_LIBRARIES})
