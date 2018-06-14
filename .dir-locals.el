@@ -3,5 +3,6 @@
 
 ((nil
   (my-use-irony . t)
+  (my-use-ide . t)
   (cmake-ide-build-dir . "build")))
 
