@@ -9,21 +9,21 @@
 namespace gssxx {
   
   namespace der {
-    enum class Class {
+    enum class TagClass {
       Universal = 0,
       Application = 1,
       ContextSpecific = 2,
       Private = 3
     };
 
-    enum class PC {
+    enum class TagPC {
       Primitive = 0,
       Constructed = 1
     };
 
     struct Tag {
-      Class tagClass;
-      PC tagPc;
+      TagClass tagClass;
+      TagPC tagPc;
       int tagNumber;
       operator std::string() const;
       bool operator==(const Tag& other)

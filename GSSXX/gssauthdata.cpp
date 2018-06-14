@@ -21,7 +21,7 @@ GssAuthData::dumpTest() const
   std::cerr << static_cast<std::string>(tag) << std::endl << std::endl;
   offset += objectSize;
 
-  if (tag.tagNumber != 16 && tag.tagClass != der::Class::Universal && tag.tagPc != der::PC::Constructed) {
+  if (tag.tagNumber != 16 && tag.tagClass != der::TagClass::Universal && tag.tagPc != der::TagPC::Constructed) {
     throw std::runtime_error(std::string {"Invalid tag found, "} + static_cast<std::string>(tag));
   }
 

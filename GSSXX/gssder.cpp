@@ -6,26 +6,26 @@ Tag::operator std::string() const
 {
   std::string classString;
   switch (tagClass) {
-  case Class::Application:
+  case TagClass::Application:
     classString = "Application";
     break;
-  case Class::ContextSpecific:
+  case TagClass::ContextSpecific:
     classString = "ContextSpecific";
     break;
-  case Class::Private:
+  case TagClass::Private:
     classString = "Private";
     break;
-  case Class::Universal:
+  case TagClass::Universal:
     classString = "Universal";
     break;
   }
 
   std::string pcString;
   switch (tagPc) {
-  case PC::Primitive:
+  case TagPC::Primitive:
     pcString = "Primitive";
     break;
-  case PC::Constructed:
+  case TagPC::Constructed:
     pcString = "Constructed";
     break;
   }
@@ -43,25 +43,25 @@ DerParser::parseTag(std::size_t offset)
 
   switch (c1 & 0xC0) {
   case 0x00:
-    tag.tagClass = der::Class::Universal;
+    tag.tagClass = der::TagClass::Universal;
     break;
   case 0x40:
-    tag.tagClass = der::Class::Application;
+    tag.tagClass = der::TagClass::Application;
     break;
   case 0x80:
-    tag.tagClass = der::Class::ContextSpecific;
+    tag.tagClass = der::TagClass::ContextSpecific;
     break;
   case 0xC0:
-    tag.tagClass = der::Class::Private;
+    tag.tagClass = der::TagClass::Private;
     break;
   }
   
   switch (c1 & 0x20) {
   case 0x00:
-    tag.tagPc = der::PC::Primitive;
+    tag.tagPc = der::TagPC::Primitive;
     break;
   case 0x20:
-    tag.tagPc = der::PC::Constructed;
+    tag.tagPc = der::TagPC::Constructed;
     break;
   }
 
