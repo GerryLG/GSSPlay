@@ -8,7 +8,7 @@
 
 #include "gssservercred.hpp"
 #include "gssname.hpp"
-#include "gssbuffer.hpp"
+#include "gssapibuffer.hpp"
 #include "gssexternalbuffer.hpp"
 #include "gssstatus.hpp"
 
@@ -34,10 +34,10 @@ namespace gssxx {
       }
     }
 
-    GssExternalBuffer wrap(GssBuffer& buffer, GssStatus& status);
-    GssExternalBuffer wrap(GssBuffer& buffer);
-    GssExternalBuffer unwrap(GssBuffer& buffer, GssStatus& status);
-    GssExternalBuffer unwrap(GssBuffer& buffer);
+    GssExternalBuffer wrap(GssApiBuffer& buffer, GssStatus& status);
+    GssExternalBuffer wrap(GssApiBuffer& buffer);
+    GssExternalBuffer unwrap(GssApiBuffer& buffer, GssStatus& status);
+    GssExternalBuffer unwrap(GssApiBuffer& buffer);
 
     bool established() const
     {

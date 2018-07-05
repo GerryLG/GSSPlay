@@ -13,7 +13,6 @@ using tcp = asio::ip::tcp;
 GssBuffer::GssBuffer()
   : handler_ {}
   , sendDataLength_ {0}
-  , parserPtr_ {new der::DerParser {this}}
 {
 }
 

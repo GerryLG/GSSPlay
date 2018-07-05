@@ -6,11 +6,11 @@
 #include <gssapi/gssapi.h>
 #include <boost/endian/arithmetic.hpp>
 
-#include "gssbuffer.hpp"
+#include "gssapibuffer.hpp"
 
 namespace gssxx {
 
-  class GssVectorBuffer : public GssBuffer {
+  class GssVectorBuffer : public GssApiBuffer {
   public:
     GssVectorBuffer()
       : gssBuffer_ {0, nullptr}

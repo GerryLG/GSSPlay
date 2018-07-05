@@ -3,11 +3,11 @@
 
 #include <iostream>
 
-#include "gssbuffer.hpp"
+#include "gssapibuffer.hpp"
 
 namespace gssxx {
 
-  class GssExternalBuffer : public GssBuffer {
+  class GssExternalBuffer : public GssApiBuffer {
   public:
     //! Default constructor
     GssExternalBuffer()

@@ -35,7 +35,7 @@ GssServerContext::acceptContextAsync(tcp::socket& socket, Callback callback)
 }
 
 void
-GssServerContext::receivedToken(std::shared_ptr<GssBuffer> buffer, GssxxError error)
+GssServerContext::receivedToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError error)
 {
   std::cerr << "GssServerContext::receivedToken" << std::endl;
 
@@ -91,7 +91,7 @@ GssServerContext::receivedToken(std::shared_ptr<GssBuffer> buffer, GssxxError er
 }
 
 void
-GssServerContext::sentToken(std::shared_ptr<GssBuffer> buffer, GssxxError error)
+GssServerContext::sentToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError error)
 {
   // We need buffer to be passed into this function so that it retains the reference
   // until the send is complete.

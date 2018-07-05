@@ -30,13 +30,9 @@ namespace gssxx {
     using Handler = std::function<void(const GssxxError)>;
 
     GssBuffer(const GssBuffer& other) = delete;
-    GssBuffer(GssBuffer&& other) = default;
-
     GssBuffer& operator=(const GssBuffer& other) = delete;
-    GssBuffer& operator=(GssBuffer&& other) = default;
     
     virtual std::size_t size() const = 0;
-    virtual operator gss_buffer_t() = 0;
 
     void send(boost::asio::ip::tcp::socket& socket) const;
     void sendAsync(boost::asio::ip::tcp::socket& socket, Handler handler) const;
@@ -56,6 +52,8 @@ namespace gssxx {
 
   protected:
     GssBuffer();
+    GssBuffer(GssBuffer&& other) = default;
+    GssBuffer& operator=(GssBuffer&& other) = default;
 
     virtual const void* data() const = 0;
     mutable Handler handler_;
@@ -68,10 +66,7 @@ namespace gssxx {
                         const boost::system::error_code& error,
                         std::size_t bytes_transferred) const;
 
-    static std::vector<der::DerItem> derParseSequenceOfSequence(const GssBuffer& sosBuffer);
-
     mutable boost::endian::big_uint32_t sendDataLength_;
-    std::unique_ptr<der::DerParser> parserPtr_;
    };
 
   std::ostream& operator<<(std::ostream& os, const GssBuffer& buffer);

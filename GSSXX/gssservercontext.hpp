@@ -8,7 +8,7 @@
 #include <string>
 #include <memory>
 
-#include "gssbuffer.hpp"
+#include "gssapibuffer.hpp"
 #include "gssname.hpp"
 #include "gssservercred.hpp"
 #include "gssxxerror.hpp"
@@ -36,9 +36,9 @@ namespace gssxx {
     GssAuthData getAuthData();
 
   private:
-    void receivedToken(std::shared_ptr<GssBuffer> buffer,
+    void receivedToken(std::shared_ptr<GssApiBuffer> buffer,
                        GssxxError error);
-    void sentToken(std::shared_ptr<GssBuffer> buffer,
+    void sentToken(std::shared_ptr<GssApiBuffer> buffer,
                    GssxxError error);
     void postCallback(const GssxxError& status);
 
