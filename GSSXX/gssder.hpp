@@ -37,16 +37,14 @@ namespace gssxx {
     };
 
     struct DerItem {
-      DerItem(Tag newTag, GssPartialBuffer newBuffer, std::size_t lengthInBuffer)
+      DerItem(Tag newTag, GssPartialBuffer newBuffer)
         : tag {newTag}
         , data(std::move(newBuffer))
-        , length {lengthInBuffer}
       {
       }
       
       Tag tag;
       GssPartialBuffer data;
-      std::size_t length;
     };
 
     class DerParser {

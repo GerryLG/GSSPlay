@@ -117,7 +117,7 @@ DerParser::parseItem(std::size_t offset)
   std::tie(objectSize, length) = parseLength(offset);
   newOffset += objectSize;
 
-  return std::make_unique<DerItem>(tag, GssPartialBuffer {*bufferPtr_, newOffset, length}, length);
+  return std::make_unique<DerItem>(tag, GssPartialBuffer {*bufferPtr_, newOffset, length});
   //  return std::unique_ptr<DerItem>{new DerItem {tag,
   //        {*bufferPtr_, newOffset, length}, length}};
 }
