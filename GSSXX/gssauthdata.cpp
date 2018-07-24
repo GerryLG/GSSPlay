@@ -3,6 +3,7 @@
 
 #include "gssauthdata.hpp"
 #include "gsspartialbuffer.hpp"
+#include "gssvectorbuffer.hpp"
 #include "gssder.hpp"
 
 using namespace gssxx;
@@ -42,6 +43,12 @@ GssAuthData::dumpTest() const
   std::cerr << "Length: " << authData1_0val->data.size() << std::endl;
   std::cerr << "ItemSize: " << authData1_0val->size << std::endl;
   std::cerr << authData1_0val->data << std::endl;
+
+  std::cerr << "Iterator test..." << std::endl;
+  GssVectorBuffer testbuf {authData1_0->data};
+  for (auto& c : testbuf) {
+    std::cout << static_cast<unsigned>(c) << std::endl;
+  }
 
   parser.reset(&authData1_0->data);
   auto authDataType = parser.parseInteger();

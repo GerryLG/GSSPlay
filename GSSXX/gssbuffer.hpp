@@ -28,6 +28,7 @@ namespace gssxx {
     friend class GssPartialBuffer;
   public:
     using Handler = std::function<void(const GssxxError)>;
+    using const_iterator = const unsigned char*;
 
     GssBuffer(const GssBuffer& other) = delete;
     GssBuffer& operator=(const GssBuffer& other) = delete;
@@ -46,7 +47,15 @@ namespace gssxx {
       return *(static_cast<const unsigned char *>(data()) + index);
     }
 
-    // GssPartialBuffer partialBuffer(std::size_t offset, std::size_t size);
+    const_iterator begin() const
+    {
+      return static_cast<const_iterator>(data());
+    }
+
+    const_iterator end() const
+    {
+      return begin() + size();
+    }
 
     virtual ~GssBuffer();
 

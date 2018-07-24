@@ -53,6 +53,17 @@ namespace gssxx {
       other.gssBufferPtr_ = GSS_C_NO_BUFFER;
     }
 
+    // Copy from another buffer
+    GssVectorBuffer(const GssBuffer& other)
+      : data_ {other.begin(), other.end()}
+      , gssBuffer_ {data_.size(), data_.data()}
+      , gssBufferPtr_ {&gssBuffer_}
+      , receiveDataLength_ {static_cast<boost::endian::big_uint32_t::value_type>(data_.size())}
+    {
+      std::cerr << "GssVectorBuffer(GssBuffer)" << std::endl;
+    }
+
+
     GssVectorBuffer& operator=(const GssVectorBuffer& other) = delete;
 
     GssVectorBuffer& operator=(GssVectorBuffer&& other) noexcept
