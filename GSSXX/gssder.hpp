@@ -37,29 +37,41 @@ namespace gssxx {
     };
 
     struct DerItem {
-      DerItem(Tag newTag, GssPartialBuffer newBuffer)
+      DerItem(Tag newTag, GssPartialBuffer newBuffer, std::size_t newSize)
         : tag {newTag}
         , data(std::move(newBuffer))
+        , size {newSize}
       {
       }
       
       Tag tag;
       GssPartialBuffer data;
+      std::size_t size;
     };
 
     class DerParser {
     public:
       DerParser(const GssBuffer* bufferPtr)
-        : bufferPtr_{bufferPtr}
+        : bufferPtr_ {bufferPtr}
+        , offset_ {0}
       {
       }
 
-      std::pair<std::size_t,der::Tag> parseTag(std::size_t offset);
-      std::pair<std::size_t,std::size_t> parseLength(std::size_t offset);
-      std::unique_ptr<DerItem> parseItem(std::size_t offset = 0);
+      void reset(const GssBuffer* bufferPtr)
+      {
+        bufferPtr_ = bufferPtr;
+        offset_ = 0;
+      }
+
+      std::unique_ptr<DerItem> parseItem();
+      long parseInteger();
 
     private:
+      std::pair<std::size_t,der::Tag> parseTag();
+      std::pair<std::size_t,std::size_t> parseLength();
+
       const GssBuffer* bufferPtr_;
+      std::size_t offset_;
     };
   }
 }  // gssxx

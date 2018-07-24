@@ -34,12 +34,12 @@ Tag::operator std::string() const
 }
 
 std::pair<std::size_t,Tag>
-DerParser::parseTag(std::size_t offset)
+DerParser::parseTag()
 {
   std::size_t tagSize {1};
   Tag tag;
   
-  unsigned int c1 {bufferPtr_->charAt(offset)};
+  unsigned int c1 {bufferPtr_->charAt(offset_)};
 
   switch (c1 & 0xC0) {
   case 0x00:
@@ -72,22 +72,23 @@ DerParser::parseTag(std::size_t offset)
     do
       {
         tag.tagNumber <<= 7;
-        c1 = bufferPtr_->charAt(offset + tagSize);
+        c1 = bufferPtr_->charAt(offset_ + tagSize);
         ++tagSize;
         tag.tagNumber |= (c1 & 0x7f);
       } while ((c1 & 0x80) == 0x80);
   }
 
+  offset_ += tagSize;
   return std::make_pair(tagSize,tag);
 }
 
 std::pair<std::size_t,std::size_t>
-DerParser::parseLength(std::size_t offset)
+DerParser::parseLength()
 {
   std::size_t lengthSize {1};
   std::size_t length {1};
 
-  unsigned int c1 {bufferPtr_->charAt(offset)};
+  unsigned int c1 {bufferPtr_->charAt(offset_)};
 
   if ((c1 & 0x80) == 0) {
     length = c1 & 0x7f;
@@ -96,28 +97,51 @@ DerParser::parseLength(std::size_t offset)
     length = 0;
     for (int i = 1; i < lengthSize; ++i) {
       length <<= 8;
-      length += bufferPtr_->charAt(offset + i);
+      length += bufferPtr_->charAt(offset_ + i);
     }
   }
 
+  offset_ += lengthSize;
   return std::make_pair(lengthSize, length);
 }
 
 std::unique_ptr<DerItem>
-DerParser::parseItem(std::size_t offset)
+DerParser::parseItem()
 {
-  std::size_t newOffset {offset};
+  std::size_t newOffset {offset_};
   Tag tag;
   std::size_t objectSize;
 
-  std::tie(objectSize, tag) = parseTag(offset);
+  std::tie(objectSize, tag) = parseTag();
   newOffset += objectSize;
 
   std::size_t length;
-  std::tie(objectSize, length) = parseLength(offset);
+  std::tie(objectSize, length) = parseLength();
   newOffset += objectSize;
 
-  return std::make_unique<DerItem>(tag, GssPartialBuffer {*bufferPtr_, newOffset, length});
-  //  return std::unique_ptr<DerItem>{new DerItem {tag,
-  //        {*bufferPtr_, newOffset, length}, length}};
+  auto itemSize = (newOffset - offset_) + length;
+
+  offset_ = newOffset + length;
+  return std::make_unique<DerItem>(tag, GssPartialBuffer {*bufferPtr_, newOffset, length}, itemSize);
+}
+
+long
+DerParser::parseInteger()
+{
+  auto item = parseItem();
+  if (item->tag != Tag{der::TagClass::Universal, der::TagPC::Primitive, 2}) {
+    throw std::runtime_error {"parseInteger(): integer expected."};
+  }
+
+  long retVal {0};
+  if ((item->data.charAt(0) & 0x80) == 0x80) {
+    retVal = -1;
+  }
+
+  for (std::size_t i {0}; i < item->size; ++i) {
+    retVal <<= 8;
+    retVal |= item->data.charAt(i);
+  }
+
+  return retVal;
 }

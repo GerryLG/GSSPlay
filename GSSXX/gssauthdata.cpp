@@ -11,55 +11,46 @@ void
 GssAuthData::dumpTest() const
 {
   der::DerParser parser {&buffer_};;
-  std::size_t offset {0};
-  der::Tag tag;
 
-  std::size_t objectSize;
-  std::tie(objectSize, tag) = parser.parseTag(offset);
-  
-  std::cerr << GssPartialBuffer {buffer_, offset, objectSize};
-  std::cerr << static_cast<std::string>(tag) << std::endl << std::endl;
-  offset += objectSize;
+  auto authDataContainer = parser.parseItem();
+  std::cerr << "Tag: " << std::string(authDataContainer->tag) << std::endl;
+  std::cerr << "Length: " << authDataContainer->data.size() << std::endl;
+  std::cerr << "ItemSize: " << authDataContainer->size << std::endl;
 
-  if (tag.tagNumber != 16 && tag.tagClass != der::TagClass::Universal && tag.tagPc != der::TagPC::Constructed) {
-    throw std::runtime_error(std::string {"Invalid tag found, "} + static_cast<std::string>(tag));
-  }
+  parser.reset(&authDataContainer->data);
+  auto authData1 = parser.parseItem();
+  std::cerr << "Tag: " << std::string(authData1->tag) << std::endl;
+  std::cerr << "Length: " << authData1->data.size() << std::endl;
+  std::cerr << "ItemSize: " << authData1->size << std::endl;
 
-  std::size_t length;
-  std::tie(objectSize, length) = parser.parseLength(offset);
-  std::cerr << GssPartialBuffer {buffer_, offset, objectSize};
-  std::cerr << "Length: " << length << std::endl << std::endl;
-  offset += objectSize;
+  parser.reset(&authData1->data);
+  auto authData1_0 = parser.parseItem();
+  std::cerr << "Tag: " << std::string(authData1_0->tag) << std::endl;
+  std::cerr << "Length: " << authData1_0->data.size() << std::endl;
+  std::cerr << "ItemSize: " << authData1_0->size << std::endl;
+  std::cerr << authData1_0->data << std::endl;
 
-  std::cerr << "Remaining: " << buffer_.size() - (offset + length) << std::endl;
+  auto authData1_1 = parser.parseItem();
+  std::cerr << "Tag: " << std::string(authData1_1->tag) << std::endl;
+  std::cerr << "Length: " << authData1_1->data.size() << std::endl;
+  std::cerr << "ItemSize: " << authData1_1->size << std::endl;
+  std::cerr << authData1_1->data << std::endl;
+
+  parser.reset(&authData1_0->data);
+  auto authData1_0val = parser.parseItem();
+  std::cerr << "Tag: " << std::string(authData1_0val->tag) << std::endl;
+  std::cerr << "Length: " << authData1_0val->data.size() << std::endl;
+  std::cerr << "ItemSize: " << authData1_0val->size << std::endl;
+  std::cerr << authData1_0val->data << std::endl;
+
+  parser.reset(&authData1_0->data);
+  auto authDataType = parser.parseInteger();
+  std::cout << "AuthDataType: " << authDataType << std::endl;
+
+  parser.reset(&authData1_1->data);
+  auto authData1_1val = parser.parseItem();
+  std::cerr << "Tag: " << std::string(authData1_1val->tag) << std::endl;
+  std::cerr << "Length: " << authData1_1val->data.size() << std::endl;
+  std::cerr << "ItemSize: " << authData1_1val->size << std::endl;
+  std::cerr << authData1_1val->data << std::endl;
 }
-
-// std::vector<der::DerItem>
-// GssAuthData::derParseSequenceOfSequence(const gssxx::GssBuffer &sosBuffer)
-// {
-//   std::vector<der::DerItem> sequences;
-
-//   std::size_t offset {0};
-//   der::Tag tag;
-
-//   std::size_t objectSize;
-//   objectSize = derParseTag(sosBuffer, offset, tag);
-//   offset += objectSize;
-
-//   if (tag != der::Tag {der::Class::Universal, der::PC::Constructed, 16}) {
-//     throw std::runtime_error(std::string {"Invalid tag found, "} + static_cast<std::string>(tag));
-//   }
-
-//   std::size_t length;
-//   objectSize = derParseLength(sosBuffer, offset, length);
-//   offset += objectSize;
-
-//   auto sequencesBuffer = GssPartialBuffer {sosBuffer, offset, length};
-
-//   offset = 0;
-//   while (offset < sequencesBuffer.size()) {
-    
-//   }
-
-//   return sequences;
-// }
