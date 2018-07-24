@@ -14,7 +14,7 @@ namespace gssxx {
       : start_ {static_cast<const unsigned char*>(source.data()) + offset}
       , length_ {length}
     {
-      if (offset + length >= source.size()) {
+      if (offset + length > source.size()) {
         throw std::range_error("Partial buffer is outside the bounds of its parent.");
       }
     }
