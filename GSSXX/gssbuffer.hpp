@@ -29,9 +29,6 @@ namespace gssxx {
   public:
     using Handler = std::function<void(const GssxxError)>;
     using const_iterator = const unsigned char*;
-
-    GssBuffer(const GssBuffer& other) = delete;
-    GssBuffer& operator=(const GssBuffer& other) = delete;
     
     virtual std::size_t size() const = 0;
 
@@ -61,7 +58,15 @@ namespace gssxx {
 
   protected:
     GssBuffer();
+    GssBuffer(const GssBuffer& other) : handler_ {nullptr} {}
     GssBuffer(GssBuffer&& other) = default;
+    
+    GssBuffer& operator=(const GssBuffer& other)
+    {
+      handler_ = nullptr;
+      return *this;
+    }
+
     GssBuffer& operator=(GssBuffer&& other) = default;
 
     virtual const void* data() const = 0;
