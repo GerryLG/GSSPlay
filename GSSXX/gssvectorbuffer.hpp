@@ -38,8 +38,15 @@ namespace gssxx {
       std::cerr << "GssVectorBuffer(std::string)" << std::endl;
     }
 
-    // Copy Constructor (Deleted)
-    GssVectorBuffer(const GssVectorBuffer& other) = delete;
+    // Copy Constructor
+    GssVectorBuffer(const GssVectorBuffer& other)
+      : data_ {other.data_}
+      , gssBuffer_ {data_.size(), data_.data()}
+      , gssBufferPtr_ {&gssBuffer_}
+      , receiveDataLength_ {other.receiveDataLength_}
+    {
+      std::cerr << "GssVectorBuffer(const GssBuffer&)" << std::endl;
+    }
 
     // Move Constructor
     GssVectorBuffer(GssVectorBuffer&& other) noexcept
