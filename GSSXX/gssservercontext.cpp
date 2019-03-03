@@ -136,9 +136,11 @@ GssServerContext::postCallback(const GssxxError& status)
   ioService.post(std::bind(callback, status));
 }
 
-GssAuthData
+std::vector<GssAuthData>
 GssServerContext::getAuthData()
 {
+  std::cerr << "GssServerContext::getAuthData()" << std::endl;
+
   GssExternalBuffer buffer;
   OM_uint32 majorStatus, minorStatus;
 
@@ -147,5 +149,6 @@ GssServerContext::getAuthData()
     throw GssException("Error extracting authdata", majorStatus, minorStatus);
   }
 
-  return std::move(buffer);
+  auto authDataVec = GssAuthData::Parse(buffer);
+  return authDataVec;
 }

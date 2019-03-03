@@ -5,26 +5,33 @@
 #include <vector>
 
 #include "gssexternalbuffer.hpp"
+#include "gssvectorbuffer.hpp"
 #include "gsspartialbuffer.hpp"
 
 namespace gssxx {
 
   class GssAuthData {
   public:
-    GssAuthData(GssExternalBuffer&& buffer)
-      : buffer_{std::move(buffer)}
+    static std::vector<GssAuthData> Parse(const GssBuffer& buffer);
+
+    uint32_t authdataType()
     {
+      return authdataType_;
     }
 
-    operator GssExternalBuffer&()
+    GssVectorBuffer& data()
     {
-      return buffer_;
+      return data_;
     }
-
-    void dumpTest() const;
 
   private:
-    GssExternalBuffer buffer_;
+    GssAuthData(uint32_t type, const GssBuffer& source)
+      : authdataType_ {type}
+      , data_ {source}
+    {}
+
+    uint32_t authdataType_;
+    GssVectorBuffer data_;
  };
 
 }  // gssxx

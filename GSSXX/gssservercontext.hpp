@@ -7,6 +7,7 @@
 #include <gssapi/gssapi.h>
 #include <string>
 #include <memory>
+#include <vector>
 
 #include "gssapibuffer.hpp"
 #include "gssname.hpp"
@@ -33,7 +34,7 @@ namespace gssxx {
 
     void acceptContextAsync(boost::asio::ip::tcp::socket& socket, Callback callback);
 
-    GssAuthData getAuthData();
+    std::vector<GssAuthData> getAuthData();
 
   private:
     void receivedToken(std::shared_ptr<GssApiBuffer> buffer,

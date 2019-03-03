@@ -78,6 +78,10 @@ DerParser::parseTag()
       } while ((c1 & 0x80) == 0x80);
   }
 
+  std::cerr << "Parsed Tag:" << std::endl;
+  std::cerr << GssPartialBuffer(*bufferPtr_, offset_, tagSize);
+  std::cerr << std::string(tag) << std::endl;
+  
   offset_ += tagSize;
   return std::make_pair(tagSize,tag);
 }
@@ -101,6 +105,10 @@ DerParser::parseLength()
     }
   }
 
+  std::cerr << "Parsed Length:" << std::endl;
+  std::cerr << GssPartialBuffer(*bufferPtr_, offset_, lengthSize);
+  std::cerr << "Length: " << length << std::endl;
+
   offset_ += lengthSize;
   return std::make_pair(lengthSize, length);
 }
@@ -108,6 +116,8 @@ DerParser::parseLength()
 std::unique_ptr<DerItem>
 DerParser::parseItem()
 {
+  std::cerr << "DerParser::parseItem()" << std::endl;
+
   std::size_t newOffset {offset_};
   Tag tag;
   std::size_t objectSize;
@@ -125,9 +135,30 @@ DerParser::parseItem()
   return std::make_unique<DerItem>(tag, GssPartialBuffer {*bufferPtr_, newOffset, length}, itemSize);
 }
 
+std::vector<DerItem>
+DerParser::parseSequence()
+{
+  std::cerr << "DerParser::parseSequence()" << std::endl;
+
+  auto seqContainer = parseItem();
+  if (seqContainer->tag != Tag {der::TagClass::Universal, der::TagPC::Constructed, 16}) {
+    throw std::runtime_error {"parseSequence(): sequence expected."};
+  }
+
+  DerParser itemParser {&seqContainer->data};
+  std::vector<DerItem> retItems;
+  while (itemParser.remaining()) {
+    retItems.push_back(*itemParser.parseItem());
+  }
+
+  return retItems;
+}
+
 long
 DerParser::parseInteger()
 {
+  std::cerr << "DerParser::parseInteger()" << std::endl;
+
   auto item = parseItem();
   if (item->tag != Tag{der::TagClass::Universal, der::TagPC::Primitive, 2}) {
     throw std::runtime_error {"parseInteger(): integer expected."};
@@ -143,5 +174,22 @@ DerParser::parseInteger()
     retVal |= item->data.charAt(i);
   }
 
+  std::cerr << "Parsed Integer:" << std::endl;
+  std::cerr << item->data;
+  std::cerr << "Integer: " << retVal << std::endl;
+
   return retVal;
+}
+
+std::unique_ptr<gssxx::GssPartialBuffer>
+DerParser::parseOctetString()
+{
+  std::cerr << "DerParser::parseOctetString()" << std::endl;
+
+  auto item = parseItem();
+  if (item->tag != Tag{der::TagClass::Universal, der::TagPC::Primitive, 4}) {
+    throw std::runtime_error {"parseOctetString(): Octet String expected."};
+  }
+
+  return std::make_unique<gssxx::GssPartialBuffer>(item->data);
 }

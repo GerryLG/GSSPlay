@@ -26,11 +26,11 @@ namespace gssxx {
       TagPC tagPc;
       int tagNumber;
       operator std::string() const;
-      bool operator==(const Tag& other)
+      bool operator==(const Tag& other) const
       {
         return tagClass == other.tagClass && tagPc == other.tagPc && tagNumber == other.tagNumber;
       }
-      bool operator!=(const Tag& other)
+      bool operator!=(const Tag& other) const
       {
         return ! (*this == other);
       }
@@ -43,6 +43,11 @@ namespace gssxx {
         , size {newSize}
       {
       }
+
+      DerItem(const DerItem& other) = default;
+      DerItem(DerItem&& other) = default;
+      DerItem& operator=(const DerItem& other) = default;
+      DerItem& operator=(DerItem&& other) = default;
       
       Tag tag;
       GssPartialBuffer data;
@@ -63,8 +68,15 @@ namespace gssxx {
         offset_ = 0;
       }
 
+      bool remaining()
+      {
+        return offset_ < bufferPtr_->size();
+      }
+
       std::unique_ptr<DerItem> parseItem();
+      std::vector<DerItem> parseSequence();
       long parseInteger();
+      std::unique_ptr<GssPartialBuffer> parseOctetString();
 
     private:
       std::pair<std::size_t,der::Tag> parseTag();
