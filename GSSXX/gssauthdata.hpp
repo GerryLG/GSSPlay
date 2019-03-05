@@ -12,6 +12,11 @@ namespace gssxx {
 
   class GssAuthData {
   public:
+    GssAuthData(uint32_t type, const GssBuffer& source)
+      : authdataType_ {type}
+      , data_ {source}
+    {}
+
     static std::vector<GssAuthData> Parse(const GssBuffer& buffer);
 
     uint32_t authdataType()
@@ -25,11 +30,6 @@ namespace gssxx {
     }
 
   private:
-    GssAuthData(uint32_t type, const GssBuffer& source)
-      : authdataType_ {type}
-      , data_ {source}
-    {}
-
     uint32_t authdataType_;
     GssVectorBuffer data_;
  };

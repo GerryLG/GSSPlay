@@ -45,7 +45,7 @@ namespace gssxx {
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {other.receiveDataLength_}
     {
-      std::cerr << "GssVectorBuffer(const GssBuffer&)" << std::endl;
+      std::cerr << "GssVectorBuffer() (copy constructor)" << std::endl;
     }
 
     // Move Constructor
