@@ -33,15 +33,15 @@ namespace {
     return authDataTypeValue;
   }
 
-  std::unique_ptr<GssVectorBuffer>
+  std::unique_ptr<GssPartialBuffer>
   ParseAuthDataContentsValue(const GssPartialBuffer& buffer)
   {
     DerParser parser {&buffer};
     auto authDataContentsValue = parser.parseOctetString();
-    return std::make_unique<GssVectorBuffer>(*authDataContentsValue);
+    return authDataContentsValue;
   }
   
-  std::unique_ptr<GssVectorBuffer>
+  std::unique_ptr<GssPartialBuffer>
   ParseAuthDataContents(const GssPartialBuffer& buffer)
   {
     DerParser parser {&buffer};
