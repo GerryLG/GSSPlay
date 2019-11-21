@@ -4,7 +4,11 @@ project (KrbPlay)
 set (CMAKE_CXX_EXTENSIONS OFF)
 set (CMAKE_CXX_STANDARD 14)
 
-set (GSSAPI_PKG_NAME "krb5-gssapi" CACHE STRING "The name of the GSSAPI library package that PkgConfig will search for.")
+set (GSSAPI_PKG_NAME "" CACHE STRING "The name of the GSSAPI library package that PkgConfig will search for.")
+
+if ("$CACHE{GSSAPI_PKG_NAME}" STREQUAL "")
+  message (FATAL_ERROR "Must specify GSSAPI_PKG_NAME")
+endif ("$CACHE{GSSAPI_PKG_NAME}" STREQUAL "")
 
 find_package (Boost REQUIRED COMPONENTS system thread)
 find_package (PkgConfig REQUIRED)
