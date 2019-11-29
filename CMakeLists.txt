@@ -10,9 +10,11 @@ find_package (PkgConfig REQUIRED)
 pkg_check_modules (GSSAPI REQUIRED krb5-gssapi)
 
 include_directories (${GSSAPI_INCLUDE_DIRS})
+link_directories (${GSSAPI_LIBRARY_DIRS})
 
 add_executable (gsstest gsstest.c)
 target_link_libraries (gsstest PUBLIC ${GSSAPI_LIBRARIES})
+target_compile_options (gsstest PUBLIC ${GSSAPI_CFLAGS_OTHER})
 
 add_subdirectory (GSSXX)
 
