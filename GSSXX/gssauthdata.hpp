@@ -8,7 +8,7 @@ namespace gssxx {
   class GssAuthData {
   public:
     GssAuthData(GssExternalBuffer&& buffer)
-      : buffer_{std::move(buffer)}
+      : buffer_ {std::move(buffer)}
     {
     }
 

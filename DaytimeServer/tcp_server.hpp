@@ -15,8 +15,8 @@ public:
   tcp_server(boost::asio::io_service& io_service,
              const std::string& service_name,
              const std::string& keytab)
-    : acceptor_(io_service, tcp::endpoint(tcp::v4(), 1313))
-    , credential_{service_name, keytab}
+    : acceptor_ {io_service, tcp::endpoint(tcp::v4(), 1313)}
+    , credential_ {service_name, keytab}
   {
     start_accept();
   }

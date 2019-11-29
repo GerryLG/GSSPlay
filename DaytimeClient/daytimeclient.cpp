@@ -20,11 +20,11 @@ int main(int argc, char* argv[])
 
     gssxx::GssClientContext context;
     
-    tcp::resolver resolver(ioService);
-    tcp::resolver::query query(argv[1], "1313");
+    tcp::resolver resolver {ioService};
+    tcp::resolver::query query {argv[1], "1313"};
     tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 
-    tcp::socket socket(ioService);
+    tcp::socket socket {ioService};
     boost::asio::connect(socket, endpoint_iterator);
 
     try {
