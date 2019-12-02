@@ -2,6 +2,7 @@
 
 #include "gssname.hpp"
 #include "gssexception.hpp"
+#include "gssexternalbuffer.hpp"
 
 using namespace gssxx;
 
@@ -53,12 +54,12 @@ GssName::to_string() const
   }
 
   OM_uint32 majorStatus, minorStatus;
-  gss_buffer_desc outBuffer;
+  GssExternalBuffer outBuffer;
 
-  majorStatus = gss_display_name(&minorStatus, name_, &outBuffer, nullptr);
+  majorStatus = gss_display_name(&minorStatus, name_, outBuffer, nullptr);
   if (majorStatus != GSS_S_COMPLETE) {
     throw GssException {"Error displaying name", majorStatus, minorStatus};
   }
 
-  return reinterpret_cast<char *>(outBuffer.value);
+  return {outBuffer.begin(), outBuffer.end()};
 }
