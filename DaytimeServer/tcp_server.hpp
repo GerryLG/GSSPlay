@@ -12,9 +12,12 @@ class tcp_server
 {
   using tcp = boost::asio::ip::tcp;
 public:
-  tcp_server(boost::asio::io_service& io_service)
-    : acceptor_(io_service, tcp::endpoint(tcp::v4(), 1313))
-    , credential_{"sample", "/home/gerry/sample.keytab"}
+  tcp_server(boost::asio::io_service& io_service,
+             unsigned short port_num,
+             const std::string& service_name,
+             const std::string& keytab)
+    : acceptor_ {io_service, tcp::endpoint(tcp::v4(), port_num)}
+    , credential_ {service_name, keytab}
   {
     start_accept();
   }

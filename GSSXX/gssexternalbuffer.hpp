@@ -60,7 +60,7 @@ namespace gssxx {
 
     operator boost::asio::const_buffer()
     {
-      return boost::asio::const_buffer(gssBuffer_.value, gssBuffer_.length);
+      return boost::asio::const_buffer {gssBuffer_.value, gssBuffer_.length};
     }
 
   protected:

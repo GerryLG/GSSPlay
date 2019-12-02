@@ -27,8 +27,8 @@ public:
   
 private:
   tcp_connection(boost::asio::io_service& io_service, const gssxx::GssServerCredential& credential)
-    : socket_(io_service)
-    , context_{credential}
+    : socket_ {io_service}
+    , context_ {credential}
   {
   }
 
