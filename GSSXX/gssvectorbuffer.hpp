@@ -102,6 +102,11 @@ namespace gssxx {
       return data_.size();
     }
 
+    virtual const void* data() const override final
+    {
+      return data_.data();
+    }
+
     virtual operator gss_buffer_t() override final
     {
       return gssBufferPtr_;
@@ -114,13 +119,6 @@ namespace gssxx {
 
     void receive(boost::asio::ip::tcp::socket& socket);
     void receiveAsync(boost::asio::ip::tcp::socket& socket, Handler handler);
-
-  protected:
-
-    virtual const void* data() const override final
-    {
-      return data_.data();
-    }
 
   private:
     void bufferSizeReceived(boost::asio::ip::tcp::socket* socket,

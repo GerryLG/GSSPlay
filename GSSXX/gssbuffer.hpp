@@ -31,6 +31,7 @@ namespace gssxx {
     using const_iterator = const unsigned char*;
     
     virtual std::size_t size() const = 0;
+    virtual const void* data() const = 0;
 
     void send(boost::asio::ip::tcp::socket& socket) const;
     void sendAsync(boost::asio::ip::tcp::socket& socket, Handler handler) const;
@@ -69,7 +70,6 @@ namespace gssxx {
 
     GssBuffer& operator=(GssBuffer&& other) = default;
 
-    virtual const void* data() const = 0;
     mutable Handler handler_;
 
   private:

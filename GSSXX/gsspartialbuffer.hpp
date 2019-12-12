@@ -32,7 +32,6 @@ namespace gssxx {
       return length_;
     }
 
-  protected:
     virtual const void* data() const override
     {
       return start_;

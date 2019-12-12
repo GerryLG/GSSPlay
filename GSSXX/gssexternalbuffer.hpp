@@ -53,6 +53,11 @@ namespace gssxx {
       return gssBuffer_.length;
     }
 
+    virtual const void* data() const override final
+    {
+      return gssBuffer_.value;
+    }
+
     virtual operator gss_buffer_t() override final
     {
       return &gssBuffer_;
@@ -61,12 +66,6 @@ namespace gssxx {
     operator boost::asio::const_buffer()
     {
       return boost::asio::const_buffer {gssBuffer_.value, gssBuffer_.length};
-    }
-
-  protected:
-    virtual const void* data() const override final
-    {
-      return gssBuffer_.value;
     }
 
   private:
