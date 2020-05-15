@@ -40,8 +40,8 @@ GssBuffer::bufferSizeSent(tcp::socket* socket, const system::error_code& error, 
   std::cerr << "GssBuffer::bufferSizeSent" << std::endl;
 
   if (error) {
-    auto& ioService = socket->get_io_service();
-    ioService.post(std::bind(handler_, GssxxError {"Error sending buffer size.", error}));
+    auto executor = socket->get_executor();
+    asio::post(executor, std::bind(handler_, GssxxError {"Error sending buffer size.", error}));
     handler_ = nullptr;
     return;
   }
@@ -55,11 +55,11 @@ void
 GssBuffer::bufferDataSent(tcp::socket* socket, const system::error_code& error, std::size_t bytes_transferred) const
 {
   std::cerr << "GssBuffer::bufferDataSent" << std::endl;
-  auto& ioService = socket->get_io_service();
+  auto executor = socket->get_executor();
   if (error) {
-    ioService.post(std::bind(handler_, GssxxError {"Error sending buffer data", error}));
+    asio::post(executor, std::bind(handler_, GssxxError {"Error sending buffer data", error}));
   } else {
-    ioService.post(std::bind(handler_, GssxxError {}));
+    asio::post(executor, std::bind(handler_, GssxxError {}));
   }
   handler_ = nullptr;
 }

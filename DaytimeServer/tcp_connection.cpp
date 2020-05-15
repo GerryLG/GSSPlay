@@ -23,9 +23,9 @@ tcp_connection::~tcp_connection()
 }
 
 tcp_connection::pointer
-tcp_connection::create(boost::asio::io_service& io_service, const GssServerCredential& credential)
+tcp_connection::create(boost::asio::io_context& io_context, const GssServerCredential& credential)
 {
-  return pointer(new tcp_connection {io_service, credential});
+  return pointer(new tcp_connection {io_context, credential});
 }
 
 void

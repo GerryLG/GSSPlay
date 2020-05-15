@@ -127,13 +127,13 @@ GssServerContext::postCallback(const GssxxError& status)
     throw std::logic_error("GssServerContext::postCallback with a null callback");
   }
 
-  auto& ioService = socketPtr_->get_io_service();
+  auto executor = socketPtr_->get_executor();
   auto callback = callback_;
 
   socketPtr_ = nullptr;
   callback_ = nullptr;
 
-  ioService.post(std::bind(callback, status));
+  asio::post(executor, std::bind(callback, status));
 }
 
 GssAuthData

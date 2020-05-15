@@ -14,7 +14,7 @@ public:
   using tcp = boost::asio::ip::tcp;
   using pointer = std::shared_ptr<tcp_connection>;
 
-  static pointer create(boost::asio::io_service& io_service, const gssxx::GssServerCredential& credential);
+  static pointer create(boost::asio::io_context& io_context, const gssxx::GssServerCredential& credential);
 
   tcp::socket& socket()
   {
@@ -26,8 +26,8 @@ public:
   ~tcp_connection();
   
 private:
-  tcp_connection(boost::asio::io_service& io_service, const gssxx::GssServerCredential& credential)
-    : socket_ {io_service}
+  tcp_connection(boost::asio::io_context& io_context, const gssxx::GssServerCredential& credential)
+    : socket_ {io_context}
     , context_ {credential}
   {
   }

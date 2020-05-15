@@ -6,9 +6,9 @@
 int main()
 {
   try {
-    boost::asio::io_service io_service;
-    tcp_server server {io_service, 1313, "sample", "/home/gerry/sample.keytab"};
-    io_service.run();
+    boost::asio::io_context io_context;
+    tcp_server server {io_context, 1313, "sample", "/home/gerry/sample.keytab"};
+    io_context.run();
   } catch (std::exception& e) {
     std::cerr << e.what() << std::endl;
   } catch (...) {
