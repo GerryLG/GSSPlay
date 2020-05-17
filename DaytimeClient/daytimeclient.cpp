@@ -16,15 +16,14 @@ int main(int argc, char* argv[])
       return 1;
     }
 
-    boost::asio::io_service ioService;
+    boost::asio::io_context io_context;
 
     gssxx::GssClientContext context;
     
-    tcp::resolver resolver {ioService};
-    tcp::resolver::query query {argv[1], "1313"};
-    tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
+    tcp::resolver resolver {io_context};
+    tcp::resolver::results_type endpoint_iterator = resolver.resolve(argv[1], "1313");
 
-    tcp::socket socket {ioService};
+    tcp::socket socket {io_context};
     boost::asio::connect(socket, endpoint_iterator);
 
     try {

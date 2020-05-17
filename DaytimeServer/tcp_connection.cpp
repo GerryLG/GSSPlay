@@ -23,9 +23,10 @@ tcp_connection::~tcp_connection()
 }
 
 tcp_connection::pointer
-tcp_connection::create(boost::asio::io_service& io_service, const GssServerCredential& credential)
+tcp_connection::create(const boost::asio::ip::tcp::socket::executor_type& executor,
+                       const GssServerCredential& credential)
 {
-  return pointer(new tcp_connection {io_service, credential});
+  return pointer(new tcp_connection {executor, credential});
 }
 
 void
@@ -35,7 +36,10 @@ tcp_connection::start()
 
   if (! context_.established()) {
     std::cerr << "tcp_connection: Context not yet established." <<std::endl;
-    context_.acceptContextAsync(socket_, std::bind(&tcp_connection::handle_auth, shared_from_this(), std::placeholders::_1));
+    context_.acceptContextAsync(socket_,
+                                std::bind(&tcp_connection::handle_auth,
+                                          shared_from_this(),
+                                          std::placeholders::_1));
     return;
   }
 

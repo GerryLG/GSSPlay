@@ -36,8 +36,8 @@ GssVectorBuffer::bufferSizeReceived(tcp::socket* socket,
 {
   std::cerr << "GssVectorBuffer::bufferSizeReceived" << std::endl;
   if (error) {
-    auto& ioService = socket->get_io_service();
-    ioService.post(std::bind(handler_, GssxxError {"Error receiving buffer size", error}));
+    auto executor = socket->get_executor();
+    asio::post(executor, std::bind(handler_, GssxxError {"Error receiving buffer size", error}));
     handler_ = nullptr;
     return;
   }
@@ -54,12 +54,12 @@ GssVectorBuffer::bufferDataReceived(tcp::socket* socket,
                                     std::size_t bytesReceived)
 {
   std::cerr << "GssVectorBuffer::bufferDataReceived" << std::endl;
-  auto& ioService = socket->get_io_service();
+  auto executor = socket->get_executor();;
 
   if (error) {
-    ioService.post(std::bind(handler_, GssxxError {"Error receiving buffer data", error}));
+    asio::post(executor, std::bind(handler_, GssxxError {"Error receiving buffer data", error}));
   } else {
-    ioService.post(std::bind(handler_, GssxxError {}));
+    asio::post(executor, std::bind(handler_, GssxxError {}));
   }
 
   handler_ = nullptr;
