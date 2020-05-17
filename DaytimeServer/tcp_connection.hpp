@@ -14,7 +14,8 @@ public:
   using tcp = boost::asio::ip::tcp;
   using pointer = std::shared_ptr<tcp_connection>;
 
-  static pointer create(boost::asio::io_context& io_context, const gssxx::GssServerCredential& credential);
+  static pointer create(const boost::asio::ip::tcp::socket::executor_type& executor,
+                        const gssxx::GssServerCredential& credential);
 
   tcp::socket& socket()
   {
@@ -26,11 +27,21 @@ public:
   ~tcp_connection();
   
 private:
-  tcp_connection(boost::asio::io_context& io_context, const gssxx::GssServerCredential& credential)
-    : socket_ {io_context}
+#if BOOST_ASIO_VERSION >= 101400
+  tcp_connection(const boost::asio::ip::tcp::socket::executor_type& executor,
+                 const gssxx::GssServerCredential& credential)
+    : socket_ {executor}
     , context_ {credential}
   {
   }
+#else
+  tcp_connection(const boost::asio::ip::tcp::socket::executor_type& executor,
+                 const gssxx::GssServerCredential& credential)
+    : socket_ {executor.context()}
+    , context_ {credential}
+  {
+  }
+#endif
 
   void handle_write(const gssxx::GssxxError& error);
 
