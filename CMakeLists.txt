@@ -1,8 +1,8 @@
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required (VERSION 3.15)
 project (KrbPlay)
 
 set (CMAKE_CXX_EXTENSIONS OFF)
-set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_STANDARD 20)
 
 set (GSSAPI_PKG_NAME "" CACHE STRING "The name of the GSSAPI library package that PkgConfig will search for.")
 
