@@ -1,6 +1,7 @@
 #include "exception"
 
 #include <gssapi/gssapi_krb5.h>
+#include <memory>
 
 #include "gssservercred.hpp"
 #include "gssname.hpp"
@@ -11,7 +12,7 @@ using namespace gssxx;
 GssServerCredential::GssServerCredential(const std::string& serviceName)
 {
   setCredential(serviceName);
-  referenceCount_ = new int {1};
+  referenceCount_ = std::make_shared<int>(1);
 }
 
 GssServerCredential::GssServerCredential(const std::string& serviceName,
@@ -21,7 +22,7 @@ GssServerCredential::GssServerCredential(const std::string& serviceName,
     throw std::runtime_error {"Error registering keytab"};
   }
   setCredential(serviceName);
-  referenceCount_ = new int {1};
+  referenceCount_ = std::make_shared<int>(1);
 }
 
 GssServerCredential::~GssServerCredential() noexcept

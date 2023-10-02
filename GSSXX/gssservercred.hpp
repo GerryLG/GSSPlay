@@ -3,6 +3,7 @@
 
 #include <string>
 #include <utility>
+#include <memory>
 
 #include <gssapi/gssapi.h>
 
@@ -45,7 +46,7 @@ namespace gssxx {
   private:
     void setCredential(const std::string& serviceName);
     gss_cred_id_t credential_;
-    int* referenceCount_;
+    std::shared_ptr<int> referenceCount_;
   };
 
   inline void swap(GssServerCredential& lhs, GssServerCredential& rhs) noexcept
