@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <string>
 #include <ctime>
 #include <functional>
@@ -43,11 +44,11 @@ tcp_connection::start()
     return;
   }
 
-  std::unique_ptr<GssVectorBuffer> buffer {new GssVectorBuffer {make_daytime_string()}};
-  auto wrappedBuffer = new GssExternalBuffer;
-  *wrappedBuffer = context_.wrap(*buffer);
-  message_.reset(wrappedBuffer);
+  auto bufferPtr {std::make_unique<GssVectorBuffer>(make_daytime_string())};
+  auto wrappedBufferPtr {std::make_unique<GssExternalBuffer>()};
 
+  *wrappedBufferPtr = context_.wrap(*bufferPtr);
+  message_ = std::move(wrappedBufferPtr);
   message_->sendAsync(socket_, std::bind(&tcp_connection::handle_write,
                                          shared_from_this(),
                                          std::placeholders::_1));
