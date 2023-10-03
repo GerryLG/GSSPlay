@@ -14,7 +14,6 @@
 #include "gssservercred.hpp"
 #include "gssxxerror.hpp"
 #include "gsscontext.hpp"
-#include "gssauthdata.hpp"
 
 namespace gssxx {
 
@@ -33,8 +32,6 @@ namespace gssxx {
     GssServerContext(const GssServerContext&) = delete; // No copying
 
     void acceptContextAsync(boost::asio::ip::tcp::socket& socket, Callback callback);
-
-    std::vector<GssAuthData> getAuthData();
 
   private:
     void receivedToken(std::shared_ptr<GssApiBuffer> buffer,

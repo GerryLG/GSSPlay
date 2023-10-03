@@ -3,13 +3,11 @@ add_library (gssxx
   gssstatus.cpp
   gssname.cpp
   gssbuffer.cpp
-  gssauthdata.cpp
   gsscontext.cpp
   gssclientcontext.cpp
   gssservercontext.cpp
   gssservercred.cpp
   gssvectorbuffer.cpp
-  gssder.cpp
   )
 
 target_include_directories (gssxx INTERFACE .)

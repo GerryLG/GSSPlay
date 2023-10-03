@@ -2,7 +2,6 @@
 #include <boost/format.hpp>
 
 #include "gssbuffer.hpp"
-#include "gssder.hpp"
 
 using namespace gssxx;
 using namespace boost;

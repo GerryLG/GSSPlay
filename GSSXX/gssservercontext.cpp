@@ -135,20 +135,3 @@ GssServerContext::postCallback(const GssxxError& status)
 
   asio::post(executor, std::bind(callback, status));
 }
-
-std::vector<GssAuthData>
-GssServerContext::getAuthData()
-{
-  std::cerr << "GssServerContext::getAuthData()" << std::endl;
-
-  GssExternalBuffer buffer;
-  OM_uint32 majorStatus, minorStatus;
-
-  majorStatus = gsskrb5_extract_authz_data_from_sec_context(&minorStatus, context_, 1, buffer);
-  if (majorStatus != GSS_S_COMPLETE) {
-    throw GssException("Error extracting authdata", majorStatus, minorStatus);
-  }
-
-  auto authDataVec = GssAuthData::Parse(buffer);
-  return authDataVec;
-}
