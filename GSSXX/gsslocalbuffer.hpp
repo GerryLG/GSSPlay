@@ -1,5 +1,5 @@
-#ifndef GSSVECTORBUFFER_H
-#define GSSVECTORBUFFER_H
+#ifndef GSSLOCALBUFFER_H
+#define GSSLOCALBUFFER_H
 
 #include <vector>
 #include <utility>
@@ -135,4 +135,4 @@ namespace gssxx {
   }; // class GssVectorBuffer
 }  // gssxx
 
-#endif /* GSSVECTORBUFFER_H */
+#endif /* GSSLOCALBUFFER_H */

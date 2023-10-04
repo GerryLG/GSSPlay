@@ -1,5 +1,5 @@
-#ifndef GSSEXTERNALBUFFER_H
-#define GSSEXTERNALBUFFER_H
+#ifndef GSSRESULTBUFFER_H
+#define GSSRESULTBUFFER_H
 
 #include <iostream>
 
@@ -82,4 +82,4 @@ namespace gssxx {
 
 } // gssxx
 
-#endif /* GSSEXTERNALBUFFER_H */
+#endif /* GSSRESULTBUFFER_H */

@@ -1,5 +1,5 @@
-#ifndef GSSPARTIALBUFFER_H
-#define GSSPARTIALBUFFER_H
+#ifndef GSSBUFFERVIEW_H
+#define GSSBUFFERVIEW_H
 
 #include <stdexcept>
 #include <gssapi/gssapi.h>
@@ -44,4 +44,4 @@ namespace gssxx {
 
 }  // gssxx
 
-#endif /* GSSPARTIALBUFFER_H */
+#endif /* GSSBUFFERVIEW_H */

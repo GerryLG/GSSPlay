@@ -1,4 +1,4 @@
-#include "gssvectorbuffer.hpp"
+#include "gsslocalbuffer.hpp"
 
 using namespace gssxx;
 using namespace boost;

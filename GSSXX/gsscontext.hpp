@@ -9,7 +9,7 @@
 #include "gssservercred.hpp"
 #include "gssname.hpp"
 #include "gssapibuffer.hpp"
-#include "gssexternalbuffer.hpp"
+#include "gssresultbuffer.hpp"
 #include "gssstatus.hpp"
 
 namespace gssxx {

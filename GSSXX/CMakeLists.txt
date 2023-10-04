@@ -7,7 +7,7 @@ add_library (gssxx
   gssclientcontext.cpp
   gssservercontext.cpp
   gssservercred.cpp
-  gssvectorbuffer.cpp
+  gsslocalbuffer.cpp
   )
 
 target_include_directories (gssxx INTERFACE .)

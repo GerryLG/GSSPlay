@@ -3,7 +3,7 @@
 
 #include <boost/asio.hpp>
 #include "gssclientcontext.hpp"
-#include "gssvectorbuffer.hpp"
+#include "gsslocalbuffer.hpp"
 #include "gssexception.hpp"
 
 using boost::asio::ip::tcp;

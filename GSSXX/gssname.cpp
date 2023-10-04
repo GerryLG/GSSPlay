@@ -2,7 +2,7 @@
 
 #include "gssname.hpp"
 #include "gssexception.hpp"
-#include "gssexternalbuffer.hpp"
+#include "gssresultbuffer.hpp"
 
 using namespace gssxx;
 

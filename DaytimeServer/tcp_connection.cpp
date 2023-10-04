@@ -5,8 +5,8 @@
 #include <functional>
 
 #include "tcp_connection.hpp"
-#include "gssvectorbuffer.hpp"
-#include "gssexternalbuffer.hpp"
+#include "gsslocalbuffer.hpp"
+#include "gssresultbuffer.hpp"
 
 using namespace gssxx;
 
