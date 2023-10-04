@@ -44,8 +44,8 @@ tcp_connection::start()
     return;
   }
 
-  auto bufferPtr {std::make_unique<GssVectorBuffer>(make_daytime_string())};
-  auto wrappedBufferPtr {std::make_unique<GssExternalBuffer>()};
+  auto bufferPtr {std::make_unique<GssLocalBuffer>(make_daytime_string())};
+  auto wrappedBufferPtr {std::make_unique<GssResultBuffer>()};
 
   *wrappedBufferPtr = context_.wrap(*bufferPtr);
   message_ = std::move(wrappedBufferPtr);

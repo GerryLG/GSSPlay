@@ -54,7 +54,7 @@ GssName::to_string() const
   }
 
   OM_uint32 majorStatus, minorStatus;
-  GssExternalBuffer outBuffer;
+  GssResultBuffer outBuffer;
 
   majorStatus = gss_display_name(&minorStatus, name_, outBuffer, nullptr);
   if (majorStatus != GSS_S_COMPLETE) {

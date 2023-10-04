@@ -34,10 +34,10 @@ namespace gssxx {
       }
     }
 
-    GssExternalBuffer wrap(GssApiBuffer& buffer, GssStatus& status);
-    GssExternalBuffer wrap(GssApiBuffer& buffer);
-    GssExternalBuffer unwrap(GssApiBuffer& buffer, GssStatus& status);
-    GssExternalBuffer unwrap(GssApiBuffer& buffer);
+    GssResultBuffer wrap(GssApiBuffer& buffer, GssStatus& status);
+    GssResultBuffer wrap(GssApiBuffer& buffer);
+    GssResultBuffer unwrap(GssApiBuffer& buffer, GssStatus& status);
+    GssResultBuffer unwrap(GssApiBuffer& buffer);
 
     bool established() const
     {

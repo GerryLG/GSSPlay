@@ -4,11 +4,11 @@
 
 using namespace gssxx;
 
-GssExternalBuffer
+GssResultBuffer
 GssContext::wrap(GssApiBuffer& buffer, GssStatus& status)
 {
   std::cerr << "GssContext::wrap(buffer, status)" << std::endl;
-  GssExternalBuffer returnBuffer;
+  GssResultBuffer returnBuffer;
   OM_uint32 majorStatus, minorStatus;
 
   majorStatus = gss_wrap(&minorStatus, context_, 1, GSS_C_QOP_DEFAULT, buffer, nullptr, returnBuffer);
@@ -17,13 +17,13 @@ GssContext::wrap(GssApiBuffer& buffer, GssStatus& status)
   return returnBuffer;
 }
 
-GssExternalBuffer
+GssResultBuffer
 GssContext::wrap(GssApiBuffer& buffer)
 {
   std::cerr << "GssContext::wrap(buffer)" << std::endl;
   GssStatus status;
 
-  GssExternalBuffer returnBuffer = wrap(buffer, status);
+  GssResultBuffer returnBuffer = wrap(buffer, status);
   if (! status) {
     throw GssException("Error wrapping buffer", status);
   }
@@ -31,11 +31,11 @@ GssContext::wrap(GssApiBuffer& buffer)
   return returnBuffer;
 }
 
-GssExternalBuffer
+GssResultBuffer
 GssContext::unwrap(GssApiBuffer& buffer, GssStatus& status)
 {
   std::cerr << "GssContext::unwrap(buffer, status)" << std::endl;
-  GssExternalBuffer returnBuffer;
+  GssResultBuffer returnBuffer;
   OM_uint32 majorStatus, minorStatus;
 
   majorStatus = gss_unwrap(&minorStatus, context_, buffer, returnBuffer, nullptr, nullptr);
@@ -44,13 +44,13 @@ GssContext::unwrap(GssApiBuffer& buffer, GssStatus& status)
   return returnBuffer;
 }
 
-GssExternalBuffer
+GssResultBuffer
 GssContext::unwrap(GssApiBuffer& buffer)
 {
   std::cerr << "GssContext::unwrap(buffer)" << std::endl;
   GssStatus status;
 
-  GssExternalBuffer returnBuffer = unwrap(buffer, status);
+  GssResultBuffer returnBuffer = unwrap(buffer, status);
   if (! status) {
     throw GssException("Error unwrapping buffer", status);
   }

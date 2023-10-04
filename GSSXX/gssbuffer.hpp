@@ -11,13 +11,9 @@
 #include <gssapi/gssapi.h>
 
 #include "gssxxerror.hpp"
-// #include "gssder.hpp"
 
 namespace gssxx {
 
-  // forward declarations
-  class GssPartialBuffer;
-  
   namespace der {
     class DerParser;
     struct DerItem;
@@ -25,7 +21,6 @@ namespace gssxx {
   
   class GssBuffer {
     friend std::ostream& operator<<(std::ostream& os, const GssBuffer& buffer);
-    friend class GssPartialBuffer;
   public:
     using Handler = std::function<void(const GssxxError)>;
     using const_iterator = const unsigned char*;

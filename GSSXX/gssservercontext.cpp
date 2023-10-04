@@ -25,7 +25,7 @@ GssServerContext::acceptContextAsync(tcp::socket& socket, Callback callback)
     throw std::logic_error("acceptContextAsync called on a closed socket");
   }
 
-  auto buffer = std::make_shared<GssVectorBuffer>();
+  auto buffer = std::make_shared<GssLocalBuffer>();
 
   buffer->receiveAsync(socket,
                        std::bind(&GssServerContext::receivedToken,
@@ -49,7 +49,7 @@ GssServerContext::receivedToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError
   OM_uint32 majorStatus, minorStatus;
   gss_OID doid;
 
-  auto sendBuffer = std::make_shared<GssExternalBuffer>();
+  auto sendBuffer = std::make_shared<GssResultBuffer>();
 
   majorStatus = gss_accept_sec_context(&minorStatus, &context_, credential_, *buffer,
                                        GSS_C_NO_CHANNEL_BINDINGS, peerName_, &doid,
@@ -79,7 +79,7 @@ GssServerContext::receivedToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError
                                     sendBuffer,
                                     std::placeholders::_1));
   } else if (state_ == State::ContinueNeeded) {
-    auto receivedBuffer = std::make_shared<GssVectorBuffer>();
+    auto receivedBuffer = std::make_shared<GssLocalBuffer>();
     receivedBuffer->receiveAsync(*socketPtr_,
                                  std::bind(&GssServerContext::receivedToken,
                                            this,
@@ -105,7 +105,7 @@ GssServerContext::sentToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError err
   }
 
   if (state_ == State::ContinueNeeded) {
-    auto receivedBuffer = std::make_shared<GssVectorBuffer>();
+    auto receivedBuffer = std::make_shared<GssLocalBuffer>();
     receivedBuffer->receiveAsync(*socketPtr_,
                                  std::bind(&GssServerContext::receivedToken,
                                            this,

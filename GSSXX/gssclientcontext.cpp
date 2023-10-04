@@ -16,8 +16,8 @@ gssxx::GssClientContext::InitiateContext(tcp::socket& socket, const std::string&
   peerName_ = peerName;
 
   OM_uint32 majorStatus, minorStatus;
-  GssVectorBuffer receivedBuffer;
-  GssExternalBuffer sendBuffer;
+  GssLocalBuffer receivedBuffer;
+  GssResultBuffer sendBuffer;
 
   do {
     majorStatus = gss_init_sec_context(&minorStatus,

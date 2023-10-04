@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
       return 1;
     }
 
-    gssxx::GssVectorBuffer buffer;
+    gssxx::GssLocalBuffer buffer;
     buffer.receive(socket);
     std::cout << buffer << std::endl;
 

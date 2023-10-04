@@ -2,30 +2,29 @@
 #define GSSBUFFERVIEW_H
 
 #include <stdexcept>
-#include <gssapi/gssapi.h>
 
 #include "gssbuffer.hpp"
 
 namespace gssxx {
 
-  class GssPartialBuffer : public GssBuffer {
+  class GssBufferView : public GssBuffer {
   public:
-    GssPartialBuffer(const GssBuffer& source, std::size_t offset, std::size_t length)
+    GssBufferView(const GssBuffer& source, std::size_t offset, std::size_t length)
       : start_ {static_cast<const unsigned char*>(source.data()) + offset}
       , length_ {length}
     {
       if (offset + length > source.size()) {
-        throw std::range_error("Partial buffer is outside the bounds of its parent.");
+        throw std::range_error("BufferView is outside the bounds of its parent.");
       }
     }
 
-    GssPartialBuffer(const GssPartialBuffer& other) = default;
-    GssPartialBuffer(GssPartialBuffer&& other) = default;
+    GssBufferView(const GssBufferView& other) = default;
+    GssBufferView(GssBufferView&& other) = default;
 
-    GssPartialBuffer& operator=(const GssPartialBuffer& other) = default;
-    GssPartialBuffer& operator=(GssPartialBuffer&& other) = default;
+    GssBufferView& operator=(const GssBufferView& other) = default;
+    GssBufferView& operator=(GssBufferView&& other) = default;
 
-    virtual ~GssPartialBuffer() = default;
+    virtual ~GssBufferView() = default;
 
     virtual std::size_t size() const override
     {

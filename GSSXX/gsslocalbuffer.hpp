@@ -10,72 +10,72 @@
 
 namespace gssxx {
 
-  class GssVectorBuffer : public GssApiBuffer {
+  class GssLocalBuffer : public GssApiBuffer {
   public:
-    GssVectorBuffer()
+    GssLocalBuffer()
       : gssBuffer_ {0, nullptr}
       , gssBufferPtr_ {GSS_C_NO_BUFFER}
       , receiveDataLength_ {0}
     {
-      std::cerr << "GssVectorBuffer()" << std::endl;
+      std::cerr << "GssLocalBuffer()" << std::endl;
     }
 
-    GssVectorBuffer(std::size_t size)
+    GssLocalBuffer(std::size_t size)
       : data_(size)
       , gssBuffer_ {size, data_.data()}
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {static_cast<boost::endian::big_uint32_t::value_type>(size)}
     {
-      std::cerr << "GssVectorBuffer(" << size << ")" << std::endl;
+      std::cerr << "GssLocalBuffer(" << size << ")" << std::endl;
     }
 
-    GssVectorBuffer(const std::string& s)
+    GssLocalBuffer(const std::string& s)
       : data_ {s.begin(), s.end()}
       , gssBuffer_ {data_.size(), data_.data()}
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {static_cast<boost::endian::big_uint32_t::value_type>(data_.size())}
     {
-      std::cerr << "GssVectorBuffer(std::string)" << std::endl;
+      std::cerr << "GssLocalBuffer(std::string)" << std::endl;
     }
 
     // Copy Constructor
-    GssVectorBuffer(const GssVectorBuffer& other)
+    GssLocalBuffer(const GssLocalBuffer& other)
       : data_ {other.data_}
       , gssBuffer_ {data_.size(), data_.data()}
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {other.receiveDataLength_}
     {
-      std::cerr << "GssVectorBuffer() (copy constructor)" << std::endl;
+      std::cerr << "GssLocalBuffer() (copy constructor)" << std::endl;
     }
 
     // Move Constructor
-    GssVectorBuffer(GssVectorBuffer&& other) noexcept
+    GssLocalBuffer(GssLocalBuffer&& other) noexcept
       : data_ {std::move(other.data_)}
       , gssBuffer_ {other.gssBuffer_}
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {other.receiveDataLength_}
     {
-      std::cerr << "GssVectorBuffer() (move constructor)" << std::endl;
+      std::cerr << "GssLocalBuffer() (move constructor)" << std::endl;
       other.gssBuffer_ = {0, nullptr};
       other.gssBufferPtr_ = GSS_C_NO_BUFFER;
     }
 
     // Copy from another buffer
-    GssVectorBuffer(const GssBuffer& other)
+    GssLocalBuffer(const GssBuffer& other)
       : data_ {other.begin(), other.end()}
       , gssBuffer_ {data_.size(), data_.data()}
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {static_cast<boost::endian::big_uint32_t::value_type>(data_.size())}
     {
-      std::cerr << "GssVectorBuffer(GssBuffer)" << std::endl;
+      std::cerr << "GssLocalBuffer(GssBuffer)" << std::endl;
     }
 
 
-    GssVectorBuffer& operator=(const GssVectorBuffer& other) = delete;
+    GssLocalBuffer& operator=(const GssLocalBuffer& other) = delete;
 
-    GssVectorBuffer& operator=(GssVectorBuffer&& other) noexcept
+    GssLocalBuffer& operator=(GssLocalBuffer&& other) noexcept
     {
-      std::cerr << "GssVectorBuffer (Move Assignment)" << std::endl;
+      std::cerr << "GssLocalBuffer (Move Assignment)" << std::endl;
       data_ = std::move(other.data_);
       gssBuffer_ = other.gssBuffer_;
       gssBufferPtr_ = &gssBuffer_;
@@ -84,14 +84,14 @@ namespace gssxx {
       return *this;
     }
 
-    virtual ~GssVectorBuffer()
+    virtual ~GssLocalBuffer()
     {
-      std::cerr << "~GssVectorBuffer" << std::endl;
+      std::cerr << "~GssLocalBuffer" << std::endl;
     }
 
     void reset(std::size_t size)
     {
-      std::cerr << "GssVectorBuffer::reset(" << size << ")" << std::endl;
+      std::cerr << "GssLocalBuffer::reset(" << size << ")" << std::endl;
       data_ = std::vector<char>(size);
       gssBuffer_ = {size, data_.data()};
       gssBufferPtr_ = &gssBuffer_;
@@ -132,7 +132,7 @@ namespace gssxx {
     gss_buffer_desc gssBuffer_;
     gss_buffer_t gssBufferPtr_;
     boost::endian::big_uint32_t receiveDataLength_;
-  }; // class GssVectorBuffer
+  }; // class GssLocalBuffer
 }  // gssxx
 
 #endif /* GSSLOCALBUFFER_H */

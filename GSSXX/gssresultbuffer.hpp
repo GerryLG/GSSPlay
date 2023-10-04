@@ -7,40 +7,40 @@
 
 namespace gssxx {
 
-  class GssExternalBuffer : public GssApiBuffer {
+  class GssResultBuffer : public GssApiBuffer {
   public:
     //! Default constructor
-    GssExternalBuffer()
+    GssResultBuffer()
       : gssBuffer_ {0, nullptr}
     {
-      std::cerr << "GssExternalBuffer()" << std::endl;
+      std::cerr << "GssResultBuffer()" << std::endl;
     }
 
     //! Copy constructor
-    GssExternalBuffer(const GssExternalBuffer& other) = delete;
+    GssResultBuffer(const GssResultBuffer& other) = delete;
 
     //! Move constructor
-    GssExternalBuffer(GssExternalBuffer&& other) noexcept
+    GssResultBuffer(GssResultBuffer&& other) noexcept
     {
-      std::cerr << "GssExternalBuffer() (Move Constructor)" << std::endl;
+      std::cerr << "GssResultBuffer() (Move Constructor)" << std::endl;
       gssBuffer_ = other.gssBuffer_;
       other.gssBuffer_ = {0, nullptr};
     }
 
     //! Destructor
-    virtual ~GssExternalBuffer() noexcept
+    virtual ~GssResultBuffer() noexcept
     {
-      std::cerr << "~GssExternalBuffer" << std::endl;
+      std::cerr << "~GssResultBuffer" << std::endl;
       clear();
     }
 
     //! Copy assignment operator
-    GssExternalBuffer& operator=(const GssExternalBuffer& other) = delete;
+    GssResultBuffer& operator=(const GssResultBuffer& other) = delete;
 
     //! Move assignment operator
-    GssExternalBuffer& operator=(GssExternalBuffer&& other) noexcept
+    GssResultBuffer& operator=(GssResultBuffer&& other) noexcept
     {
-      std::cerr << "GssExternalBuffer (move assignment)" << std::endl;
+      std::cerr << "GssResultBuffer (move assignment)" << std::endl;
       clear();
       gssBuffer_ = other.gssBuffer_;
       other.gssBuffer_ = {0, nullptr};
@@ -78,7 +78,7 @@ namespace gssxx {
     }
 
     gss_buffer_desc gssBuffer_;
-  }; // class GssExternalBuffer
+  }; // class GssResultBuffer
 
 } // gssxx
 
