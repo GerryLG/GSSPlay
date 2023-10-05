@@ -38,34 +38,33 @@ tcp_connection::start()
   if (! context_.established()) {
     std::cerr << "tcp_connection: Context not yet established." <<std::endl;
     context_.acceptContextAsync(socket_,
-                                std::bind(&tcp_connection::handle_auth,
+                                std::bind(&tcp_connection::authentication_complete,
                                           shared_from_this(),
                                           std::placeholders::_1));
     return;
   }
 
+  // Client is now authenticated so send message
   auto bufferPtr {std::make_unique<GssLocalBuffer>(make_daytime_string())};
   auto wrappedBufferPtr {std::make_unique<GssResultBuffer>()};
 
   *wrappedBufferPtr = context_.wrap(*bufferPtr);
   message_ = std::move(wrappedBufferPtr);
-  message_->sendAsync(socket_, std::bind(&tcp_connection::handle_write,
+  message_->sendAsync(socket_, std::bind(&tcp_connection::message_sent,
                                          shared_from_this(),
                                          std::placeholders::_1));
 }
 
 void
-tcp_connection::handle_write(const GssxxError& error)
+tcp_connection::message_sent(const GssxxError& error)
 {
-  std::cerr << "tcp_connection::handle_write()" << std::endl;
-
-  // TODO: This is where we did gathering the auth data.
+  std::cerr << "tcp_connection::message_sent()" << std::endl;
 }
 
 void
-tcp_connection::handle_auth(const GssxxError& error)
+tcp_connection::authentication_complete(const GssxxError& error)
 {
-  std::cerr << "tcp_connection::handle_auth()" << std::endl;
+  std::cerr << "tcp_connection::authentication_complete()" << std::endl;
 
   if (error) {
     std::cerr << error.message() << std::endl;
@@ -86,5 +85,7 @@ tcp_connection::handle_auth(const GssxxError& error)
   }
 
   std::cerr << "Authenticated: " << context_.peerName() << std::endl;
+
+  // Now client is authenticated, call start again
   start();
 }

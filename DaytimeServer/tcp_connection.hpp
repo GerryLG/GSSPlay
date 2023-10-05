@@ -43,9 +43,9 @@ private:
   }
 #endif
 
-  void handle_write(const gssxx::GssxxError& error);
+  void message_sent(const gssxx::GssxxError& error);
 
-  void handle_auth(const gssxx::GssxxError& error);
+  void authentication_complete(const gssxx::GssxxError& error);
   
   tcp::socket socket_;
   std::unique_ptr<gssxx::GssBuffer> message_;
