@@ -42,7 +42,7 @@ GssServerContext::receivedToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError
   if (error) {
     state_ = State::Error;
     error.setMessage("Error receiving token\n" + error.message());
-    postCallback(error);
+    contextComplete(error);
     return;
   }
 
@@ -68,7 +68,7 @@ GssServerContext::receivedToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError
   }
 
   if (state_ == State::Error) {
-    postCallback({"Error accepting context.", majorStatus, minorStatus});
+    contextComplete({"Error accepting context.", majorStatus, minorStatus});
     return;
   }
 
@@ -86,7 +86,7 @@ GssServerContext::receivedToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError
                                            receivedBuffer,
                                            std::placeholders::_1));
   } else {
-    postCallback({});
+    contextComplete({});
   }
 }
 
@@ -100,7 +100,7 @@ GssServerContext::sentToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError err
   if (error) {
     state_ = State::Error;
     error.setMessage("Error sending token.\n" + error.message());
-    postCallback(error);
+    contextComplete(error);
     return;
   }
 
@@ -112,19 +112,19 @@ GssServerContext::sentToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError err
                                            receivedBuffer,
                                            std::placeholders::_1));
   } else {
-    postCallback({});
+    contextComplete({});
   }
 }
 
 void
-GssServerContext::postCallback(const GssxxError& status)
+GssServerContext::contextComplete(const GssxxError& status)
 {
   if (socketPtr_ == nullptr) {
-    throw std::logic_error("GssServerContext::postCallback with a null socket");
+    throw std::logic_error("GssServerContext::contextComplete with a null socket");
   }
 
   if (callback_ == nullptr) {
-    throw std::logic_error("GssServerContext::postCallback with a null callback");
+    throw std::logic_error("GssServerContext::contextComplete with a null callback");
   }
 
   auto executor = socketPtr_->get_executor();

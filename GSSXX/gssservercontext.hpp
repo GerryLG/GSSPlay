@@ -38,7 +38,7 @@ namespace gssxx {
                        GssxxError error);
     void sentToken(std::shared_ptr<GssApiBuffer> buffer,
                    GssxxError error);
-    void postCallback(const GssxxError& status);
+    void contextComplete(const GssxxError& status);
 
     boost::asio::ip::tcp::socket* socketPtr_;
     GssServerCredential credential_;
