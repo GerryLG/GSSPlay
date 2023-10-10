@@ -1,3 +1,9 @@
+#include <algorithm>
+#include <fstream>
+#include <ios>
+#include <iterator>
+#include <stdexcept>
+
 #include <boost/endian/arithmetic.hpp>
 #include <boost/format.hpp>
 
@@ -19,7 +25,19 @@ GssBuffer::~GssBuffer()
 {
 }
 
- 
+void
+GssBuffer::save(const std::filesystem::path& filePath) const
+{
+  std::cerr << "GssBuffer::save()" << std::endl;
+  std::ofstream file {filePath, std::ios::binary};
+  if ( ! file ) {
+    throw std::runtime_error("Unable to open file " + std::string(filePath));
+  }
+
+  std::ostreambuf_iterator<char> fileIter(file.rdbuf());
+  std::copy(begin(), end(), fileIter);
+}
+
 void
 GssBuffer::send(tcp::socket& socket) const
 {

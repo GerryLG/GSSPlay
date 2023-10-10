@@ -1,6 +1,7 @@
 #ifndef GSSLOCALBUFFER_H
 #define GSSLOCALBUFFER_H
 
+#include <filesystem>
 #include <vector>
 #include <utility>
 #include <gssapi/gssapi.h>
@@ -116,6 +117,8 @@ namespace gssxx {
     {
       return boost::asio::mutable_buffer(data_.data(), data_.size());
     }
+
+    void load(const std::filesystem::path& filePath);
 
     void receive(boost::asio::ip::tcp::socket& socket);
     void receiveAsync(boost::asio::ip::tcp::socket& socket, Handler handler);

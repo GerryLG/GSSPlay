@@ -5,6 +5,7 @@
 #include <vector>
 #include <functional>
 #include <stdexcept>
+#include <filesystem>
 #include <boost/asio.hpp>
 #include <boost/endian/arithmetic.hpp>
 #include <boost/system/error_code.hpp>
@@ -18,18 +19,20 @@ namespace gssxx {
     class DerParser;
     struct DerItem;
   }
-  
+
   class GssBuffer {
     friend std::ostream& operator<<(std::ostream& os, const GssBuffer& buffer);
   public:
     using Handler = std::function<void(const GssxxError)>;
     using const_iterator = const unsigned char*;
-    
+
     virtual std::size_t size() const = 0;
     virtual const void* data() const = 0;
 
     void send(boost::asio::ip::tcp::socket& socket) const;
     void sendAsync(boost::asio::ip::tcp::socket& socket, Handler handler) const;
+
+    void save(const std::filesystem::path& filePath) const;
 
     unsigned char charAt(std::size_t index) const
     {
@@ -56,7 +59,7 @@ namespace gssxx {
     GssBuffer();
     GssBuffer(const GssBuffer& other) : handler_ {nullptr} {}
     GssBuffer(GssBuffer&& other) = default;
-    
+
     GssBuffer& operator=(const GssBuffer& other)
     {
       handler_ = nullptr;

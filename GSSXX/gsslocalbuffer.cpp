@@ -1,10 +1,39 @@
 #include "gsslocalbuffer.hpp"
+#include <filesystem>
+#include <fstream>
+#include <ios>
+#include <iterator>
+#include <stdexcept>
+#include <vector>
 
 using namespace gssxx;
 using namespace boost;
 using namespace boost::endian;
 
 using tcp = boost::asio::ip::tcp;
+namespace fs = std::filesystem;
+
+void
+GssLocalBuffer::load(const fs::path& filePath)
+{
+  std::cerr << "GssLocalBuffer::load()" << std::endl;
+
+  if ( ! fs::is_regular_file(filePath) ) {
+    throw std::runtime_error("File " + std::string(filePath) + " does not exist");
+  }
+
+  std::ifstream file(filePath, std::ios::binary);
+  if ( ! file ) {
+    throw std::runtime_error("Unable to open file " + std::string(filePath));
+  }
+
+  std::istreambuf_iterator<char> fileIter(file), fileEnd;
+  data_.reserve(fs::file_size(filePath));
+  data_.assign(fileIter, fileEnd);
+
+  gssBuffer_ = {data_.size(), data_.data()};
+  gssBufferPtr_ = &gssBuffer_;
+}
 
 void
 GssLocalBuffer::receive(tcp::socket& socket)
