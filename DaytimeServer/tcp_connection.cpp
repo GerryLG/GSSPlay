@@ -53,6 +53,24 @@ tcp_connection::start()
   message_->sendAsync(socket_, std::bind(&tcp_connection::message_sent,
                                          shared_from_this(),
                                          std::placeholders::_1));
+
+  auto& pac = context_.Pac();
+  if (pac.Valid()) {
+    std::cout << "PAC Account Name:  " << pac.AccountName()        << std::endl;
+    std::cout << "PAC Full Name:     " << pac.FullName()           << std::endl;
+    std::cout << "PAC Logon Domain:  " << pac.LogonDomain()        << std::endl;
+    std::cout << "PAC Logon Server:  " << pac.LogonServer()        << std::endl;
+    std::cout << "PAC Logon Time:    " << pac.LogonTime()          << std::endl;
+    std::cout << "PAC Passwd Change: " << pac.LastPasswordChange() << std::endl;
+    std::cout << "PAC Dns Domain:    " << pac.DnsDomainName()      << std::endl;
+    std::cout << "PAC UPN:           " << pac.UpnName()            << std::endl;
+
+    std::cout << "User SID:          " << pac.UserSid()            << std::endl;
+    std::cout << "Group SIDs:" << std::endl;
+    for (const auto& sid : pac.groupSids()) {
+      std::cout << "  " << sid << std::endl;
+    }
+  }
 }
 
 void

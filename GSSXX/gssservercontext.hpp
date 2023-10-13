@@ -11,6 +11,7 @@
 
 #include "gssapibuffer.hpp"
 #include "gssname.hpp"
+#include "gsspac.hpp"
 #include "gssservercred.hpp"
 #include "gssxxerror.hpp"
 #include "gsscontext.hpp"
@@ -33,6 +34,8 @@ namespace gssxx {
 
     void acceptContextAsync(boost::asio::ip::tcp::socket& socket, Callback callback);
 
+    const GssPac& Pac() const { return pac_; }
+
   private:
     void receivedToken(std::shared_ptr<GssApiBuffer> buffer,
                        GssxxError error);
@@ -42,6 +45,8 @@ namespace gssxx {
 
     boost::asio::ip::tcp::socket* socketPtr_;
     GssServerCredential credential_;
+    GssPac pac_;
+
     Callback callback_;
   };
 

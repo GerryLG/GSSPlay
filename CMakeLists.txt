@@ -14,6 +14,7 @@ find_package (Boost REQUIRED COMPONENTS system thread)
 find_package (PkgConfig REQUIRED)
 
 pkg_check_modules (GSSAPI REQUIRED ${GSSAPI_PKG_NAME})
+pkg_check_modules (PAC REQUIRED talloc ndr_krb5pac)
 
 include_directories (${GSSAPI_INCLUDE_DIRS})
 link_directories (${GSSAPI_LIBRARY_DIRS})
