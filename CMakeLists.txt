@@ -28,3 +28,6 @@ target_compile_options (gsstest PUBLIC ${GSSAPI_CFLAGS})
 
 add_executable (testlibgssxx testlibgssxx.cpp)
 target_link_libraries (testlibgssxx gssxx)
+
+add_executable (readbuff readbuff.cpp)
+target_link_libraries (readbuff gssxx)
