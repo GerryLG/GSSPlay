@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.15)
-project (KrbPlay)
+project (GSSPlay)
 
 set (CMAKE_CXX_EXTENSIONS OFF)
-set (CMAKE_CXX_STANDARD 20)
+set (CMAKE_CXX_STANDARD 17)
 
 set (GSSAPI_PKG_NAME "" CACHE STRING "The name of the GSSAPI library package that PkgConfig will search for.")
 
@@ -16,20 +16,15 @@ find_package (PkgConfig REQUIRED)
 pkg_check_modules (GSSAPI REQUIRED ${GSSAPI_PKG_NAME})
 pkg_check_modules (PAC REQUIRED talloc ndr_krb5pac)
 
-include_directories (${GSSAPI_INCLUDE_DIRS})
-link_directories (${GSSAPI_LIBRARY_DIRS})
-
-add_executable (gsstest gsstest.c)
-target_link_libraries (gsstest PUBLIC ${GSSAPI_LIBRARIES})
-target_compile_options (gsstest PUBLIC ${GSSAPI_CFLAGS_OTHER})
-
 add_subdirectory (GSSXX)
 
 add_subdirectory (DaytimeClient)
 add_subdirectory (DaytimeServer)
 
-include_directories (${Boost_INCLUDE_DIRS})
-link_libraries (Boost::system Boost::thread)
+
+add_executable (gsstest gsstest.c)
+target_link_libraries (gsstest PUBLIC ${GSSAPI_LIBRARIES})
+target_compile_options (gsstest PUBLIC ${GSSAPI_CFLAGS})
 
 add_executable (testlibgssxx testlibgssxx.cpp)
-target_link_libraries (testlibgssxx gssxx ${GSSAPI_LIBRARIES})
+target_link_libraries (testlibgssxx gssxx)
