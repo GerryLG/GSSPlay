@@ -60,8 +60,12 @@ tcp_connection::start()
     std::cout << "PAC Full Name:     " << pac.FullName()           << std::endl;
     std::cout << "PAC Logon Domain:  " << pac.LogonDomain()        << std::endl;
     std::cout << "PAC Logon Server:  " << pac.LogonServer()        << std::endl;
-    std::cout << "PAC Logon Time:    " << pac.LogonTime()          << std::endl;
-    std::cout << "PAC Passwd Change: " << pac.LastPasswordChange() << std::endl;
+    std::cout << "PAC Logon Time:    "
+              << std::put_time(std::gmtime(&pac.LogonTime()), "%c %Z")
+              << std::endl;
+    std::cout << "PAC Passwd Change: "
+              << std::put_time(std::gmtime(&pac.LastPasswordChange()), "%c %Z")
+              << std::endl;
     std::cout << "PAC Dns Domain:    " << pac.DnsDomainName()      << std::endl;
     std::cout << "PAC UPN:           " << pac.UpnName()            << std::endl;
 

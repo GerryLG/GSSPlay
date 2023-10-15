@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cstdint>
 #include <filesystem>
 #include <iostream>
 #include <memory>
@@ -33,7 +34,7 @@ to_time_point(NTTIME nttime)
   duration<NTTIME, std::micro> nttime_usecs {nttime / 10};
   duration<NTTIME, std::ratio<86400, 1>> nttime_offset_days { 134774 };
   auto time_point =
-      std::chrono::system_clock::time_point{nttime_usecs - nttime_offset_days};
+      system_clock::time_point{nttime_usecs - nttime_offset_days};
   return time_point;
 
   // auto epoch = sys_days{1601y / January / 1};
@@ -41,8 +42,23 @@ to_time_point(NTTIME nttime)
   // return epoch + nttime_usecs;
 }
 
+static std::time_t
+to_time_t(NTTIME nttime)
+{
+  using namespace std::chrono;
+  using namespace std::literals;
+
+  // nttime is in 100 nanosecond units from an epoch of 1/Jan/1601
+  duration<NTTIME> nttime_secs {nttime / 10000000};
+  duration<NTTIME, std::ratio<86400>> nttime_offset_days { 134774 };
+  auto time_point = system_clock::time_point{nttime_secs - nttime_offset_days};
+
+  auto time_t = system_clock::to_time_t(time_point);
+  return time_t;
+}
+
 static std::string
-to_sid_string(struct dom_sid* sid, long long rid = -1)
+to_sid_string(struct dom_sid* sid, int64_t rid = -1)
 {
   std::ostringstream sidString;
   auto idAuth = *reinterpret_cast<boost::endian::big_uint48_t*>(sid->id_auth);
@@ -90,8 +106,8 @@ namespace gssxx {
           accountName_ = logonInfo.base.account_name.string;
           logonDomain_ = logonInfo.base.logon_domain.string;
           logonServer_ = logonInfo.base.logon_server.string;
-          logonTime_   = to_time_point(logonInfo.base.logon_time);
-          lastPasswordChange_ = to_time_point(logonInfo.base.last_password_change);
+          logonTime_   = to_time_t(logonInfo.base.logon_time);
+          lastPasswordChange_ = to_time_t(logonInfo.base.last_password_change);
 
           auto domainSidPtr = logonInfo.base.domain_sid;
           

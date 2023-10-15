@@ -1,14 +1,15 @@
 #ifndef GSSPAC_H
 #define GSSPAC_H
 
+#include <cctype>
 #include <chrono>
 #include <cstdint>
+#include <ctime>
 #include <iostream>
 #include <memory>
-#include <cctype>
+#include <string>
 
 #include <boost/endian/arithmetic.hpp>
-#include <string>
 
 #include "gssbuffer.hpp"
 #include "gsslocalbuffer.hpp"
@@ -49,8 +50,8 @@ namespace gssxx {
 
     const std::vector<std::string>& groupSids() const { return groupSids_; }
 
-    const std::chrono::system_clock::time_point& LogonTime() const { return logonTime_; }
-    const std::chrono::system_clock::time_point& LastPasswordChange() const { return lastPasswordChange_; }
+    const std::time_t& LogonTime() const { return logonTime_; }
+    const std::time_t& LastPasswordChange() const { return lastPasswordChange_; }
     
   protected:
   private:
@@ -67,8 +68,8 @@ namespace gssxx {
     std::string dnsDomainName_;
     std::string upnName_;
 
-    std::chrono::system_clock::time_point logonTime_;
-    std::chrono::system_clock::time_point lastPasswordChange_;
+    std::time_t logonTime_;
+    std::time_t lastPasswordChange_;
 
     std::vector<std::string> groupSids_;
   };
