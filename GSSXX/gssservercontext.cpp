@@ -119,7 +119,7 @@ GssServerContext::sentToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError err
 }
 
 void
-GssServerContext::contextComplete(const GssxxError& status)
+GssServerContext::contextComplete(const GssxxError& error)
 {
   trace("GssServerContext::contextComplete");
 
@@ -131,27 +131,29 @@ GssServerContext::contextComplete(const GssxxError& status)
     throw std::logic_error("GssServerContext::contextComplete with a null callback");
   }
 
-  // Fetch the PAC if available
-  OM_uint32 majorStatus, minorStatus;
-  GssResultBuffer pacDisplayBuffer;
-  GssLocalBuffer pacName {"urn:mspac:"};
-  GssResultBuffer pacBuffer;
+  if (established()) {
+    // Fetch the PAC if available
+    OM_uint32 majorStatus, minorStatus;
+    GssResultBuffer pacDisplayBuffer;
+    GssLocalBuffer pacName {"urn:mspac:"};
+    GssResultBuffer pacBuffer;
 
-  int more = -1;
-  int authenticated = false;
-  int complete = false;
+    int more = -1;
+    int authenticated = false;
+    int complete = false;
 
-  majorStatus = gss_get_name_attribute(&minorStatus, peerName_, pacName,
-                                       &authenticated, &complete, pacBuffer,
-                                       pacDisplayBuffer, &more);
+    majorStatus = gss_get_name_attribute(&minorStatus, peerName_, pacName,
+                                         &authenticated, &complete, pacBuffer,
+                                         pacDisplayBuffer, &more);
 
-  if (majorStatus == GSS_S_COMPLETE) {
-    std::cerr << "Fetched PAC" << std::endl;
-    std::cerr << pacBuffer << std::endl;
-    pac_ = GssPac(pacBuffer);
-  } else {
-    GssStatus status(majorStatus, minorStatus);
-    std::cerr << "Error getting PAC: " << status.message() << std::endl;
+    if (majorStatus == GSS_S_COMPLETE) {
+      trace("Fetched PAC");
+      trace(pacBuffer);
+      pac_ = GssPac(pacBuffer);
+    } else {
+      GssStatus status(majorStatus, minorStatus);
+      std::cerr << "Error getting PAC: " << status.message() << std::endl;
+    }
   }
 
   // Post callback
@@ -159,5 +161,5 @@ GssServerContext::contextComplete(const GssxxError& status)
   auto callback = callback_;
   socketPtr_ = nullptr;
   callback_ = nullptr;
-  asio::post(executor, std::bind(callback, status));
+  asio::post(executor, std::bind(callback, error));
 }
