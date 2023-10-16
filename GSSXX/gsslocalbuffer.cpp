@@ -16,7 +16,7 @@ namespace fs = std::filesystem;
 void
 GssLocalBuffer::load(const fs::path& filePath)
 {
-  std::cerr << "GssLocalBuffer::load()" << std::endl;
+  trace("GssLocalBuffer::load()");
 
   if ( ! fs::is_regular_file(filePath) ) {
     throw std::runtime_error("File " + std::string(filePath) + " does not exist");
@@ -38,7 +38,7 @@ GssLocalBuffer::load(const fs::path& filePath)
 void
 GssLocalBuffer::receive(tcp::socket& socket)
 {
-  std::cerr << "GssLocalBuffer::receive()" << std::endl;
+  trace("GssLocalBuffer::receive()");
   big_uint32_t bufferSize;
 
   asio::read(socket, asio::buffer(&bufferSize, sizeof(bufferSize)));
@@ -49,7 +49,7 @@ GssLocalBuffer::receive(tcp::socket& socket)
 void
 GssLocalBuffer::receiveAsync(tcp::socket &socket, Handler handler)
 {
-  std::cerr << "GssLocalBuffer::receiveAsync" << std::endl;
+  trace("GssLocalBuffer::receiveAsync");
   handler_ = handler;
 
   asio::async_read(socket,
@@ -63,7 +63,7 @@ GssLocalBuffer::bufferSizeReceived(tcp::socket* socket,
                                     const system::error_code& error,
                                     std::size_t bytesReceived)
 {
-  std::cerr << "GssLocalBuffer::bufferSizeReceived" << std::endl;
+  trace("GssLocalBuffer::bufferSizeReceived");
   if (error) {
     auto executor = socket->get_executor();
     asio::post(executor, std::bind(handler_, GssxxError {"Error receiving buffer size", error}));
@@ -82,7 +82,7 @@ GssLocalBuffer::bufferDataReceived(tcp::socket* socket,
                                     const system::error_code& error,
                                     std::size_t bytesReceived)
 {
-  std::cerr << "GssLocalBuffer::bufferDataReceived" << std::endl;
+  trace("GssLocalBuffer::bufferDataReceived");
   auto executor = socket->get_executor();;
 
   if (error) {

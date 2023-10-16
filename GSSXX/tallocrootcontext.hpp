@@ -1,7 +1,9 @@
 #ifndef TALLOCROOTCONTEXT_H
 #define TALLOCROOTCONTEXT_H
 
+#include "gsstrace.hpp"
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 #include <talloc.h>
@@ -18,7 +20,7 @@ namespace gssxx {
       if (ctx_ == nullptr) {
         throw std::runtime_error("TallocRootContext(): talloc_new failed");
       }
-      std::cerr << "TallocRootContext() =>" << ctx_ << std::endl;
+      trace((std::ostringstream() << "TallocRootContext() => " << ctx_).str());
     }
 
     //! Copy constructor
@@ -27,7 +29,7 @@ namespace gssxx {
     //! Move constructor
     TallocRootContext(TallocRootContext &&other) noexcept
     {
-      std::cerr << "TallocRootContext(move constructor)" << std::endl;
+      trace("TallocRootContext(move constructor)");
       ctx_ = other.ctx_;
       other.ctx_ = nullptr;
     }
@@ -35,7 +37,7 @@ namespace gssxx {
     //! Destructor
     virtual ~TallocRootContext() noexcept
     {
-      std::cout << "~TallocRootContext()" << std::endl;
+      trace("~TallocRootContext()");
       doFree();
     }
 
@@ -45,7 +47,7 @@ namespace gssxx {
     //! Move assignment operator
     TallocRootContext& operator=(TallocRootContext &&other) noexcept
     {
-      std::cerr << "TallocRootContext(move assignment)" << std::endl;
+      trace("TallocRootContext(move assignment)");
       doFree();
       ctx_ = other.ctx_;
       other.ctx_ = nullptr;
@@ -63,7 +65,7 @@ namespace gssxx {
     void doFree()
     {
       if (ctx_ != nullptr) {
-        std::cerr << "TallocRootContext Freeing Context: " << ctx_ << std::endl;
+        trace((std::ostringstream() << "TallocRootContext Freeing Context: " << ctx_).str());
         talloc_free(ctx_);
       }
     }

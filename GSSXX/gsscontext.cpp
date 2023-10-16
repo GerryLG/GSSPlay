@@ -7,7 +7,7 @@ using namespace gssxx;
 GssResultBuffer
 GssContext::wrap(GssApiBuffer& buffer, GssStatus& status)
 {
-  std::cerr << "GssContext::wrap(buffer, status)" << std::endl;
+  trace("GssContext::wrap(buffer, status)");
   GssResultBuffer returnBuffer;
   OM_uint32 majorStatus, minorStatus;
 
@@ -20,7 +20,7 @@ GssContext::wrap(GssApiBuffer& buffer, GssStatus& status)
 GssResultBuffer
 GssContext::wrap(GssApiBuffer& buffer)
 {
-  std::cerr << "GssContext::wrap(buffer)" << std::endl;
+  trace("GssContext::wrap(buffer)");
   GssStatus status;
 
   GssResultBuffer returnBuffer = wrap(buffer, status);
@@ -34,7 +34,7 @@ GssContext::wrap(GssApiBuffer& buffer)
 GssResultBuffer
 GssContext::unwrap(GssApiBuffer& buffer, GssStatus& status)
 {
-  std::cerr << "GssContext::unwrap(buffer, status)" << std::endl;
+  trace("GssContext::unwrap(buffer, status)");
   GssResultBuffer returnBuffer;
   OM_uint32 majorStatus, minorStatus;
 
@@ -47,7 +47,7 @@ GssContext::unwrap(GssApiBuffer& buffer, GssStatus& status)
 GssResultBuffer
 GssContext::unwrap(GssApiBuffer& buffer)
 {
-  std::cerr << "GssContext::unwrap(buffer)" << std::endl;
+  trace("GssContext::unwrap(buffer)");
   GssStatus status;
 
   GssResultBuffer returnBuffer = unwrap(buffer, status);

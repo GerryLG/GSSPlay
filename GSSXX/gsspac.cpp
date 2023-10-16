@@ -80,7 +80,7 @@ namespace gssxx {
   GssPac::GssPac(const GssBuffer& buffer)
     : bufferPtr_ { std::make_shared<GssLocalBuffer>(buffer) }
   {
-    std::cerr << "GssPac(const GssBuffer&)" << std::endl;
+    trace("GssPac(const GssBuffer&)");
 
     TallocRootContext ctx;
     auto pac_data_blob = data_blob_talloc(ctx, bufferPtr_->data(), bufferPtr_->size());
@@ -100,7 +100,7 @@ namespace gssxx {
       switch (buffer.type) {
       case PAC_TYPE_LOGON_INFO:
         {
-          std::cerr << "Processing Buffer Type: " << buffer.type << std::endl;
+          trace("Processing Buffer Type: " + std::to_string(buffer.type));
           auto logonInfo = buffer.info->logon_info.info->info3;
           fullName_    = logonInfo.base.full_name.string;
           accountName_ = logonInfo.base.account_name.string;
@@ -124,7 +124,7 @@ namespace gssxx {
         }
       case PAC_TYPE_UPN_DNS_INFO:
         {
-          std::cerr << "Processing Buffer Type: " << buffer.type << std::endl;
+          trace("Processing Buffer Type: " + std::to_string(buffer.type));
           auto dnsInfo = buffer.info->upn_dns_info;
           dnsDomainName_ = dnsInfo.dns_domain_name;
           upnName_ = dnsInfo.upn_name;
@@ -146,7 +146,7 @@ namespace gssxx {
 
   void GssPac::save(const std::filesystem::path& filePath) const
   {
-    std::cerr << "GssPac::save()" << std::endl;
+    trace("GssPac::save()");
 
     if ( ! valid_ ) {
       throw std::runtime_error("Cannot save an invalid PAC");

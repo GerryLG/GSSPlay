@@ -25,14 +25,14 @@ namespace gssxx {
       : valid_ {false}
       , bufferPtr_ {nullptr}
     {
-      std::cerr << "GssPac(DefaultConstructor)" << std::endl;
+      trace("GssPac(DefaultConstructor)");
     }
 
     GssPac(const GssBuffer& buffer);
 
     ~GssPac()
     {
-      std::cerr << "~GssPac()" << std::endl;
+      trace("~GssPac()");
     }
 
     void save(const std::filesystem::path& filePath) const;

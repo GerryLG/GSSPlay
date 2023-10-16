@@ -6,14 +6,15 @@
 #include <boost/asio.hpp>
 
 #include "gssclientcontext.hpp"
-#include "gsslocalbuffer.hpp"
 #include "gssexception.hpp"
+#include "gsslocalbuffer.hpp"
+#include "gsstrace.hpp"
 
 using boost::asio::ip::tcp;
 
 
 void usage() {
-  std::cerr << "Usage: [-p portnum] <hostname> <principal>" << std::endl;
+  std::cerr << "Usage: [-t] [-p portnum] <hostname> <principal>" << std::endl;
   std::exit(1);
 }
 
@@ -26,6 +27,11 @@ int main(int argc, char* argv[])
     std::string_view arg {argv[i]};
     if (arg.empty() || arg.front() != '-')
       break;
+
+    if (arg == "-t") {
+      gssxx::setTrace(true);
+      continue;
+    }
 
     if (arg == "-p") {
       if (++i == argc)
@@ -49,7 +55,7 @@ int main(int argc, char* argv[])
     boost::asio::io_context io_context;
 
     gssxx::GssClientContext context;
-    
+
     tcp::resolver resolver {io_context};
     tcp::resolver::results_type endpoint_iterator = resolver.resolve(hostName, portnum);
 
@@ -66,10 +72,13 @@ int main(int argc, char* argv[])
 
     gssxx::GssLocalBuffer buffer;
     buffer.receive(socket);
-    std::cout << buffer << std::endl;
+    gssxx::trace(buffer);
 
     auto unwrappedBuffer = context.unwrap(buffer);
-    std::cout << unwrappedBuffer << std::endl;
+    gssxx::trace(unwrappedBuffer);
+
+    std::string message(unwrappedBuffer.begin(), unwrappedBuffer.end());
+    std::cout << "Recieved Message: " << message << std::endl;
 
   } catch (std::exception& e) {
     std::cerr << e.what() << std::endl;

@@ -19,7 +19,7 @@ using tcp = asio::ip::tcp;
 void
 GssServerContext::acceptContextAsync(tcp::socket& socket, Callback callback)
 {
-  std::cerr << "GssServerContext::acceptContextAsync" << std::endl;
+  trace("GssServerContext::acceptContextAsync");
   socketPtr_ = &socket;
   callback_ = callback;
 
@@ -39,7 +39,7 @@ GssServerContext::acceptContextAsync(tcp::socket& socket, Callback callback)
 void
 GssServerContext::receivedToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError error)
 {
-  std::cerr << "GssServerContext::receivedToken" << std::endl;
+  trace("GssServerContext::receivedToken");
 
   if (error) {
     state_ = State::Error;
@@ -97,7 +97,7 @@ GssServerContext::sentToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError err
 {
   // We need buffer to be passed into this function so that it retains the reference
   // until the send is complete.
-  std::cerr << "GssServerContext::sentToken" << std::endl;
+  trace("GssServerContext::sentToken");
 
   if (error) {
     state_ = State::Error;
@@ -121,7 +121,7 @@ GssServerContext::sentToken(std::shared_ptr<GssApiBuffer> buffer, GssxxError err
 void
 GssServerContext::contextComplete(const GssxxError& status)
 {
-  std::cerr << "GssServerContext::contextComplete" << std::endl;
+  trace("GssServerContext::contextComplete");
 
   if (socketPtr_ == nullptr) {
     throw std::logic_error("GssServerContext::contextComplete with a null socket");

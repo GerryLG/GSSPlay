@@ -11,7 +11,7 @@ using tcp = asio::ip::tcp;
 void
 gssxx::GssClientContext::InitiateContext(tcp::socket& socket, const std::string& peerName)
 {
-  std::cerr << "GssClientContext::InitiateContext()" << std::endl;
+  trace("GssClientContext::InitiateContext()");
 
   peerName_ = peerName;
 
@@ -39,15 +39,15 @@ gssxx::GssClientContext::InitiateContext(tcp::socket& socket, const std::string&
     }
 
     if (sendBuffer.size() > 0) {
-      std::cerr << "Sending token:" << std::endl;
-      std::cerr << sendBuffer << std::endl;
+      trace("Sending token:");
+      trace(sendBuffer);
       sendBuffer.send(socket);
     }
 
     if (majorStatus == GSS_S_CONTINUE_NEEDED) {
       receivedBuffer.receive(socket);
-      std::cerr << "Received Token:" << std::endl;
-      std::cerr << receivedBuffer << std::endl;
+      trace("Received Token:");
+      trace(receivedBuffer);
     }
   } while (majorStatus == GSS_S_CONTINUE_NEEDED);
 }

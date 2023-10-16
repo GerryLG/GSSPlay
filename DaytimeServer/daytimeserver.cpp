@@ -7,9 +7,10 @@
 #include <boost/asio.hpp>
 
 #include "tcp_server.hpp"
+#include "gsstrace.hpp"
 
 void usage() {
-  std::cerr << "Usage: [-p portnum] <keytab_file> <principal>" << std::endl;
+  std::cerr << "Usage: [-t] [-p portnum] <keytab_file> <principal>" << std::endl;
   std::exit(1);
 }
 
@@ -22,6 +23,11 @@ int main(int argc, char *argv[])
     std::string_view arg {argv[i]};
     if (arg.empty() || arg.front() != '-')
       break;
+
+    if (arg == "-t") {
+      gssxx::setTrace(true);
+      continue;
+    }
 
     if (arg == "-p") {
       if (++i == argc)

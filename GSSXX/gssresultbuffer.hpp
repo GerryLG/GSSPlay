@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "gssapibuffer.hpp"
+#include "gsstrace.hpp"
 
 namespace gssxx {
 
@@ -13,7 +14,7 @@ namespace gssxx {
     GssResultBuffer()
       : gssBuffer_ {0, nullptr}
     {
-      std::cerr << "GssResultBuffer()" << std::endl;
+      trace("GssResultBuffer()");
     }
 
     //! Copy constructor
@@ -22,7 +23,7 @@ namespace gssxx {
     //! Move constructor
     GssResultBuffer(GssResultBuffer&& other) noexcept
     {
-      std::cerr << "GssResultBuffer() (Move Constructor)" << std::endl;
+      trace("GssResultBuffer() (Move Constructor)");
       gssBuffer_ = other.gssBuffer_;
       other.gssBuffer_ = {0, nullptr};
     }
@@ -30,7 +31,7 @@ namespace gssxx {
     //! Destructor
     virtual ~GssResultBuffer() noexcept
     {
-      std::cerr << "~GssResultBuffer" << std::endl;
+      trace("~GssResultBuffer");
       clear();
     }
 
@@ -40,7 +41,7 @@ namespace gssxx {
     //! Move assignment operator
     GssResultBuffer& operator=(GssResultBuffer&& other) noexcept
     {
-      std::cerr << "GssResultBuffer (move assignment)" << std::endl;
+      trace("GssResultBuffer (move assignment)");
       clear();
       gssBuffer_ = other.gssBuffer_;
       other.gssBuffer_ = {0, nullptr};

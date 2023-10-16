@@ -8,6 +8,7 @@
 #include <boost/endian/arithmetic.hpp>
 
 #include "gssapibuffer.hpp"
+#include "gsstrace.hpp"
 
 namespace gssxx {
 
@@ -18,7 +19,7 @@ namespace gssxx {
       , gssBufferPtr_ {GSS_C_NO_BUFFER}
       , receiveDataLength_ {0}
     {
-      std::cerr << "GssLocalBuffer()" << std::endl;
+      trace("GssLocalBuffer()");
     }
 
     GssLocalBuffer(std::size_t size)
@@ -27,7 +28,7 @@ namespace gssxx {
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {static_cast<boost::endian::big_uint32_t::value_type>(size)}
     {
-      std::cerr << "GssLocalBuffer(" << size << ")" << std::endl;
+      trace("GssLocalBuffer(" + std::to_string(size) + ")");
     }
 
     GssLocalBuffer(const std::string& s)
@@ -36,7 +37,7 @@ namespace gssxx {
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {static_cast<boost::endian::big_uint32_t::value_type>(data_.size())}
     {
-      std::cerr << "GssLocalBuffer(std::string)" << std::endl;
+      trace("GssLocalBuffer(std::string)");
     }
 
     // Copy Constructor
@@ -46,7 +47,7 @@ namespace gssxx {
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {other.receiveDataLength_}
     {
-      std::cerr << "GssLocalBuffer() (copy constructor)" << std::endl;
+      trace("GssLocalBuffer() (copy constructor)");
     }
 
     // Move Constructor
@@ -56,7 +57,7 @@ namespace gssxx {
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {other.receiveDataLength_}
     {
-      std::cerr << "GssLocalBuffer() (move constructor)" << std::endl;
+      trace("GssLocalBuffer() (move constructor)");
       other.gssBuffer_ = {0, nullptr};
       other.gssBufferPtr_ = GSS_C_NO_BUFFER;
     }
@@ -68,7 +69,7 @@ namespace gssxx {
       , gssBufferPtr_ {&gssBuffer_}
       , receiveDataLength_ {static_cast<boost::endian::big_uint32_t::value_type>(data_.size())}
     {
-      std::cerr << "GssLocalBuffer(GssBuffer)" << std::endl;
+      trace("GssLocalBuffer(GssBuffer)");
     }
 
 
@@ -76,7 +77,7 @@ namespace gssxx {
 
     GssLocalBuffer& operator=(GssLocalBuffer&& other) noexcept
     {
-      std::cerr << "GssLocalBuffer (Move Assignment)" << std::endl;
+      trace("GssLocalBuffer (Move Assignment)");
       data_ = std::move(other.data_);
       gssBuffer_ = other.gssBuffer_;
       gssBufferPtr_ = &gssBuffer_;
@@ -87,12 +88,12 @@ namespace gssxx {
 
     virtual ~GssLocalBuffer()
     {
-      std::cerr << "~GssLocalBuffer" << std::endl;
+      trace("~GssLocalBuffer");
     }
 
     void reset(std::size_t size)
     {
-      std::cerr << "GssLocalBuffer::reset(" << size << ")" << std::endl;
+      trace("GssLocalBuffer::reset(" + std::to_string(size) + ")");
       data_ = std::vector<char>(size);
       gssBuffer_ = {size, data_.data()};
       gssBufferPtr_ = &gssBuffer_;

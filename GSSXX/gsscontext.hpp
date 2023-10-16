@@ -27,7 +27,7 @@ namespace gssxx {
     //! Destructor
     virtual ~GssContext() noexcept
     {
-      std::cerr << "~GssContext()" << std::endl;
+      trace("~GssContext()");
       if (context_ != GSS_C_NO_CONTEXT) {
         OM_uint32 minorStatus;
         gss_delete_sec_context(&minorStatus, &context_, GSS_C_NO_BUFFER);
@@ -56,7 +56,7 @@ namespace gssxx {
       , peerName_ {"NoPeer"}
       , returnFlags_ {0}
     {
-      std::cerr << "GssContext()" << std::endl;
+      trace("GssContext()");
     }
 
     State state_;

@@ -4,6 +4,7 @@
 #include <ctime>
 #include <functional>
 
+#include "gsstrace.hpp"
 #include "tcp_connection.hpp"
 #include "gsslocalbuffer.hpp"
 #include "gssresultbuffer.hpp"
@@ -20,7 +21,7 @@ make_daytime_string()
 
 tcp_connection::~tcp_connection()
 {
-  std::cerr << "tcp_connection going..." << std::endl;
+  trace("tcp_connection going...");
 }
 
 tcp_connection::pointer
@@ -33,10 +34,10 @@ tcp_connection::create(const boost::asio::ip::tcp::socket::executor_type& execut
 void
 tcp_connection::start()
 {
-  std::cerr << "tcp_connection::start()" << std::endl;
+  trace("tcp_connection::start()");
 
   if (! context_.established()) {
-    std::cerr << "tcp_connection: Context not yet established." <<std::endl;
+    trace("tcp_connection: Context not yet established.");
     context_.acceptContextAsync(socket_,
                                 std::bind(&tcp_connection::authentication_complete,
                                           shared_from_this(),
@@ -80,15 +81,17 @@ tcp_connection::start()
 void
 tcp_connection::message_sent(const GssxxError& error)
 {
-  std::cerr << "tcp_connection::message_sent()" << std::endl;
+  trace("tcp_connection::message_sent()");
 }
 
 void
 tcp_connection::authentication_complete(const GssxxError& error)
 {
-  std::cerr << "tcp_connection::authentication_complete()" << std::endl;
+  trace("tcp_connection::authentication_complete()");
 
   if (error) {
+    std::cerr << "tcp_connection: Context could not be established" << std::endl;
+
     std::cerr << error.message() << std::endl;
 
     switch (error.errorType()) {
@@ -106,7 +109,7 @@ tcp_connection::authentication_complete(const GssxxError& error)
     return;
   }
 
-  std::cerr << "Authenticated: " << context_.peerName() << std::endl;
+  std::cout << "Authenticated: " + context_.peerName() << std::endl;
 
   // Now client is authenticated, call start again
   start();

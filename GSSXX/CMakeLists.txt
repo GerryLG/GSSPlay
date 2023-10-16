@@ -9,6 +9,7 @@ add_library (gssxx
   gssservercred.cpp
   gsslocalbuffer.cpp
   gsspac.cpp
+  gsstrace.cpp
 )
 
 target_include_directories (gssxx INTERFACE .)

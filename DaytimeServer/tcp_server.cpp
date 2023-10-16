@@ -1,8 +1,9 @@
 #include "tcp_server.hpp"
+#include "gsstrace.hpp"
 
 void tcp_server::start_accept()
 {
-  std::cerr << "tcp_server::start_accept()" << std::endl;
+  gssxx::trace("tcp_server::start_accept()");
   tcp_connection::pointer new_connection =
     tcp_connection::create(acceptor_.get_executor(), credential_);
 
@@ -14,7 +15,7 @@ void tcp_server::start_accept()
 void tcp_server::handle_accept(tcp_connection::pointer new_connection,
                    const boost::system::error_code& error)
 {
-  std::cerr << "tcp_server::handle_accept()" << std::endl;
+  gssxx::trace("tcp_server::handle_accept()");
   if (!error) {
     new_connection->start();
   }

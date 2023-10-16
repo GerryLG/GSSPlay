@@ -8,6 +8,7 @@
 #include <boost/format.hpp>
 
 #include "gssbuffer.hpp"
+#include "gsstrace.hpp"
 
 using namespace gssxx;
 using namespace boost;
@@ -28,7 +29,7 @@ GssBuffer::~GssBuffer()
 void
 GssBuffer::save(const std::filesystem::path& filePath) const
 {
-  std::cerr << "GssBuffer::save()" << std::endl;
+  trace("GssBuffer::save()");
   std::ofstream file {filePath, std::ios::binary};
   if ( ! file ) {
     throw std::runtime_error("Unable to open file " + std::string(filePath));
@@ -41,10 +42,10 @@ GssBuffer::save(const std::filesystem::path& filePath) const
 void
 GssBuffer::send(tcp::socket& socket) const
 {
-  std::cerr << "GssBuffer::send()" << std::endl;
+  trace("GssBuffer::send()");
   big_uint32_t bufferSize {static_cast<big_uint32_t::value_type>(size())};
 
-  std::cerr << "BufferSize: " << bufferSize << std::endl;
+  trace("BufferSize: " + std::to_string(bufferSize));
 
   asio::write(socket, asio::buffer(&bufferSize, sizeof(bufferSize)));
   asio::write(socket, asio::buffer(data(), size()));
@@ -53,7 +54,7 @@ GssBuffer::send(tcp::socket& socket) const
 void
 GssBuffer::sendAsync(tcp::socket& socket, Handler handler) const
 {
-  std::cerr << "GssBuffer::sendAsync" << std::endl;
+  trace("GssBuffer::sendAsync");
   handler_ = handler;
 
   sendDataLength_ = size();
@@ -66,7 +67,7 @@ GssBuffer::sendAsync(tcp::socket& socket, Handler handler) const
 void
 GssBuffer::bufferSizeSent(tcp::socket* socket, const system::error_code& error, std::size_t bytes_transferred) const
 {
-  std::cerr << "GssBuffer::bufferSizeSent" << std::endl;
+  trace("GssBuffer::bufferSizeSent");
 
   if (error) {
     auto executor = socket->get_executor();
@@ -83,7 +84,7 @@ GssBuffer::bufferSizeSent(tcp::socket* socket, const system::error_code& error, 
 void
 GssBuffer::bufferDataSent(tcp::socket* socket, const system::error_code& error, std::size_t bytes_transferred) const
 {
-  std::cerr << "GssBuffer::bufferDataSent" << std::endl;
+  trace("GssBuffer::bufferDataSent");
   auto executor = socket->get_executor();
   if (error) {
     asio::post(executor, std::bind(handler_, GssxxError {"Error sending buffer data", error}));

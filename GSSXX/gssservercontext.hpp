@@ -27,7 +27,7 @@ namespace gssxx {
       , credential_ {serverCred}
       , callback_ {nullptr}
     {
-      std::cerr << "GssServerContext()" << std::endl;
+      trace("GssServerContext()");
     }
 
     GssServerContext(const GssServerContext&) = delete; // No copying
